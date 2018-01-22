@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +19,16 @@ namespace HistoryManagement
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    [Export]
+    public partial class Shell : Window
     {
-        public MainWindow()
+        [Import]
+        public ShellViewModel ViewModel
+        {
+            get { return this.DataContext as ShellViewModel; }
+            set { this.DataContext = value; }
+        }
+        public Shell()
         {
             InitializeComponent();
         }
