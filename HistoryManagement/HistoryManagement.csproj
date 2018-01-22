@@ -148,9 +148,9 @@
       <Project>{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}</Project>
       <Name>HistoryManagement.Modules.Home</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HistoryManagement.Theme\HistoryManagement.Theme.csproj">
-      <Project>{3157817c-6034-4c06-b5e1-983652b007ee}</Project>
-      <Name>HistoryManagement.Theme</Name>
+    <ProjectReference Include="..\WPFLib\Theme\Theme.csproj">
+      <Project>{72ced788-33bb-467d-b946-1e07be5055ae}</Project>
+      <Name>Theme</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

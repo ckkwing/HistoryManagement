@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "CSharpUtility\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLogger", "CSharpUtility\NLogger\NLogger.csproj", "{2055C0D2-9E61-410D-B3B1-EA843E1C851F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryManagement.Theme", "HistoryManagement.Theme\HistoryManagement.Theme.csproj", "{3157817C-6034-4C06-B5E1-983652B007EE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{F054ECC6-2F3F-40E5-97EB-FA98D228D620}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryManagement.Modules.Home", "HistoryManagement.Modules.Home\HistoryManagement.Modules.Home.csproj", "{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}"
@@ -55,14 +53,6 @@ Global
 		{2055C0D2-9E61-410D-B3B1-EA843E1C851F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2055C0D2-9E61-410D-B3B1-EA843E1C851F}.Release|x86.ActiveCfg = Release|x86
 		{2055C0D2-9E61-410D-B3B1-EA843E1C851F}.Release|x86.Build.0 = Release|x86
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Debug|x86.Build.0 = Debug|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Release|x86.ActiveCfg = Release|Any CPU
-		{3157817C-6034-4C06-B5E1-983652B007EE}.Release|x86.Build.0 = Release|Any CPU
 		{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}.Debug|x86.ActiveCfg = Debug|Any CPU

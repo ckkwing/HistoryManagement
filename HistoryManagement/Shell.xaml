@@ -1,9 +1,10 @@
-﻿<Window x:Class="HistoryManagement.Shell"
+﻿<customControl:BasicWindow x:Class="HistoryManagement.Shell"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HistoryManagement"
+        xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme"
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:inf="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
@@ -26,4 +27,4 @@
         <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HeaderRegion}" />
         <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
     </Grid>
-</Window>
+</customControl:BasicWindow>

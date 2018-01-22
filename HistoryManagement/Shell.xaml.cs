@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Theme.CustomControl;
 
 namespace HistoryManagement
 {
@@ -20,7 +21,7 @@ namespace HistoryManagement
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     [Export]
-    public partial class Shell : Window
+    public partial class Shell : BasicWindow
     {
         [Import]
         public ShellViewModel ViewModel

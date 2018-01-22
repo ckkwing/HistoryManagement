@@ -19,3 +19,4 @@ D:\Github\HistoryManagement\HistoryManagement\obj\Debug\SettingWindow.baml
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Shell.g.cs
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Shell.baml
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Github\HistoryManagement\HistoryManagement\obj\Debug\App.baml
