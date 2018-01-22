@@ -1,3 +1,6 @@
 [submodule "CSharpUtility"]
 	path = CSharpUtility
 	url = https://github.com/ckkwing/CSharpUtility.git
+[submodule "WPFLib"]
+	path = WPFLib
+	url = https://github.com/ckkwing/WPFLib.git
