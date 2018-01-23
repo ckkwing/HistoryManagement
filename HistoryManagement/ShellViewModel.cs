@@ -1,5 +1,6 @@
 ﻿using HistoryManagement.Infrastructure;
 using HistoryManagement.Infrastructure.Events;
+using HistoryManagement.Settings;
 using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Modularity;

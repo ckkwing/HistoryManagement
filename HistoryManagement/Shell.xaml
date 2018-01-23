@@ -9,8 +9,8 @@
         xmlns:inf="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
-        Title="Shell" Height="350" Width="525">
-    <i:Interaction.Triggers>
+        Title="Shell" Height="600" Width="900">
+    <!--<i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding OpenSettingWindowRequest, Mode=OneWay}">
             <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
                 <prism:PopupWindowAction.WindowContent>
@@ -18,7 +18,7 @@
                 </prism:PopupWindowAction.WindowContent>
             </prism:PopupWindowAction>
         </prism:InteractionRequestTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

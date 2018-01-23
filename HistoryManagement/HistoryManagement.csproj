@@ -77,11 +77,34 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="SettingWindow.xaml.cs">
+    <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingWindowViewModel.cs" />
+    <Compile Include="Settings\SettingWindowViewModel.cs" />
+    <Compile Include="Settings\SubSettingItems\AddLibrarySettingTabItem.xaml.cs">
+      <DependentUpon>AddLibrarySettingTabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml.cs">
+      <DependentUpon>ImportHistoryFilsSettingTabItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SubSettingItems\SettingBaseTabItem.cs" />
     <Compile Include="ShellViewModel.cs" />
+    <Page Include="LocalizedResources\CommonResource.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LocalizedResources\Language.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Settings\SubSettingItems\AddLibrarySettingTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Shell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,7 +117,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SettingWindow.xaml">
+    <Page Include="Settings\SettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

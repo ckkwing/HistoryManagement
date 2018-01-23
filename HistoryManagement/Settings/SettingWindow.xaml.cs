@@ -13,15 +13,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Theme.CustomControl.Dialog;
 
-namespace HistoryManagement
+namespace HistoryManagement.Settings
 {
     /// <summary>
     /// Interaction logic for SettingWindow.xaml
     /// </summary>
     [Export]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public partial class SettingWindow : Window
+    public partial class SettingWindow : CommonDialog
     {
         [Import]
         SettingWindowViewModel ViewModel
@@ -36,7 +37,8 @@ namespace HistoryManagement
             }
         }
 
-        public SettingWindow()
+        public SettingWindow(Window owner = null)
+            :base(owner)
         {
             InitializeComponent();
             
