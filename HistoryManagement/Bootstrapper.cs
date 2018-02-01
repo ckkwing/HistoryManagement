@@ -12,6 +12,7 @@ using Prism.Regions;
 using Prism.Regions.Behaviors;
 using Prism.Mef.Regions.Behaviors;
 using HistoryManagement.Modules.Header;
+using CommonServiceLocator;
 
 namespace HistoryManagement
 {
