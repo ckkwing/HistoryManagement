@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:HistoryManagement.Settings.SubSettingItems"
              Header="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" Style="{StaticResource SettingTabItemStyle}">
     <Grid>
-            
+        <TextBlock Text="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" />
     </Grid>
 </local:SettingBaseTabItem>

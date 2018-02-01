@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HistoryManagement.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -7,13 +8,25 @@ using System.Threading.Tasks;
 
 namespace HistoryManagement.Settings
 {
-    [Export(typeof(SettingWindowViewModel))]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class SettingWindowViewModel
+    public class SettingWindowViewModel : ViewModelBase
     {
+        private int selectedIndex = 0;
+        public int SelectedIndex
+        {
+            get
+            {
+                return selectedIndex;
+            }
+
+            set
+            {
+                selectedIndex = value;
+                RaisePropertyChanged("SelectedIndex");
+            }
+        }
+
         public SettingWindowViewModel()
         {
-            ;
         }
     }
 }

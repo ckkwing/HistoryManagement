@@ -20,11 +20,8 @@ namespace HistoryManagement.Settings
     /// <summary>
     /// Interaction logic for SettingWindow.xaml
     /// </summary>
-    [Export]
-    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class SettingWindow : CommonDialog
     {
-        [Import]
         SettingWindowViewModel ViewModel
         {
             get
@@ -41,7 +38,7 @@ namespace HistoryManagement.Settings
             :base(owner)
         {
             InitializeComponent();
-            
+            this.DataContext = new SettingWindowViewModel();
         }
 
     }
