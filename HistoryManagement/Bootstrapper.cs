@@ -13,6 +13,7 @@ using Prism.Regions.Behaviors;
 using Prism.Mef.Regions.Behaviors;
 using HistoryManagement.Modules.Header;
 using CommonServiceLocator;
+using System.ComponentModel.Composition;
 
 namespace HistoryManagement
 {
@@ -20,7 +21,9 @@ namespace HistoryManagement
     {
         protected override DependencyObject CreateShell()
         {
-            return ServiceLocator.Current.GetInstance<Shell>();
+            if (ServiceLocator.IsLocationProviderSet)
+                return ServiceLocator.Current.GetInstance<Shell>();
+            return this.Container.GetExportedValue<Shell>();
         }
 
         protected override void InitializeShell()

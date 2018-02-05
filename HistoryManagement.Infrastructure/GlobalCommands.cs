@@ -10,11 +10,6 @@ namespace HistoryManagement.Infrastructure
 {
     public static class GlobalCommands
     {
-        //public static ICommand OpenSettingWindowCommand = new DelegateCommand<object>(OnOpenSettingWindow);
-
-        //private static void OnOpenSettingWindow(object obj)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public static CompositeCommand SaveAllSettingsCommand = new CompositeCommand();
     }
 }

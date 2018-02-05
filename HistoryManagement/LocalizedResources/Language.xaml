@@ -2,6 +2,7 @@
   <!-- String form C++ Resource Start-->
     <!--Common-->
     <System:String x:Uid="IDS_OK" x:Key="IDS_OK">Ok</System:String>
+    <System:String x:Uid="IDS_BROWSE" x:Key="IDS_BROWSE">Browse</System:String>
     <System:String x:Uid="IDS_ADD" x:Key="IDS_ADD">Add</System:String>
     <System:String x:Uid="IDS_REMOVE" x:Key="IDS_REMOVE">Remove</System:String>
     <System:String x:Uid="IDS_PLAY" x:Key="IDS_PLAY">Play</System:String>
@@ -16,5 +17,8 @@
     <!--Settings-->
     <System:String x:Uid="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES" x:Key="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES">Import history files</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_ADDLIBRARY" x:Key="IDS_SETTINGS_HEADER_ADDLIBRARY">Add Library</System:String>
+    <System:String x:Uid="IDS_SETTINGS_LIBRARY_BROWSEINFO" x:Key="IDS_SETTINGS_LIBRARY_BROWSEINFO">Choose your folder to library</System:String>
+    <System:String x:Uid="IDS_SETTINGS_LIBRARY_PATH" x:Key="IDS_SETTINGS_LIBRARY_PATH">Path</System:String>
+    <System:String x:Uid="IDS_SETTINGS_LIBRARY_RANK" x:Key="IDS_SETTINGS_LIBRARY_RANK">Rank</System:String>
     <!---->
 </ResourceDictionary>

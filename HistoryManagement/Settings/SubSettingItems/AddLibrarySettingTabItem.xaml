@@ -4,8 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HistoryManagement.Settings.SubSettingItems"
-             Header="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" Style="{StaticResource SettingTabItemStyle}">
-    <Grid>
-        <TextBlock Text="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" />
+             xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme"
+             Header="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" Style="{StaticResource SettingTabItemStyle}"
+             Loaded="SettingBaseTabItem_Loaded" Unloaded="SettingBaseTabItem_Unloaded">
+    <Grid Margin="10,10,10,44">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <customControl:TextBoxEllipisis Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Height="26" OriginalText="{Binding Path=TargetPath, Mode=TwoWay}" IsReadOnly="True" IsReadOnlyCaretVisible="False" />
+            <Button Grid.Column="1" Content="{StaticResource IDS_BROWSE}" Margin="10,0" Command="{Binding Path=BrowseCommand}" />
+            <ComboBox Grid.Column="2" Width="100" ItemsSource="{Binding Path=ScanRanks}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SelectedScanRank}" />
+            <Button Grid.Column="3" Content="{StaticResource IDS_ADD}" Margin="10,0,0,0" Command="{Binding Path=AddLibraryCommand}" />
+        </Grid>
+        <ListView Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding Path=CacheLibraryList}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_PATH}" DisplayMemberBinding="{Binding Path=Path}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
+                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_RANK}" DisplayMemberBinding="{Binding Path=Level}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </local:SettingBaseTabItem>

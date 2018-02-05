@@ -39,6 +39,7 @@
       <HintPath>..\packages\CommonServiceLocator.2.0.2\lib\net45\CommonServiceLocator.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Prism, Version=7.0.0.396, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.0.0.396\lib\net45\Prism.dll</HintPath>
       <Private>True</Private>
@@ -96,6 +97,10 @@
     <Page Include="LocalizedResources\Language.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resource\ConverterDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\SubSettingItems\AddLibrarySettingTabItem.xaml">
       <SubType>Designer</SubType>
@@ -172,6 +177,10 @@
     <ProjectReference Include="..\HistoryManagement.Modules.Home\HistoryManagement.Modules.Home.csproj">
       <Project>{DAF52ED4-3C8F-4A78-8A8B-F697A606440A}</Project>
       <Name>HistoryManagement.Modules.Home</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IDAL\IDAL.csproj">
+      <Project>{946f645b-7421-4e44-959a-881f5fbfcbd2}</Project>
+      <Name>IDAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFLib\Theme\Theme.csproj">
       <Project>{72ced788-33bb-467d-b946-1e07be5055ae}</Project>

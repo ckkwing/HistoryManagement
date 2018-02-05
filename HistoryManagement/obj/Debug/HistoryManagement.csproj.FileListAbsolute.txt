@@ -26,3 +26,4 @@ D:\Github\HistoryManagement\HistoryManagement\obj\Debug\GeneratedInternalTypeHel
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.baml
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Settings\SubSettingItems\AddLibrarySettingTabItem.g.cs
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Settings\SubSettingItems\AddLibrarySettingTabItem.baml
+D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Resource\ConverterDictionary.baml

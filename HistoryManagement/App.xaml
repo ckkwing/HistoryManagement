@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!--<ResourceDictionary Source="/MediaCenter;Component/Resource/ConverterDictionary.xaml" />-->
+                <ResourceDictionary Source="/HistoryManagement;Component/Resource/ConverterDictionary.xaml" />
                 <ResourceDictionary Source="/Theme;Component/Default/Theme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

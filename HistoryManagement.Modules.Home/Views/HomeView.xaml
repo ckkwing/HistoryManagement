@@ -17,7 +17,7 @@
     </i:Interaction.Triggers>
     <StackPanel>
         <TextBlock Text="{Binding Path=Name}" />
-        <Button Command="{Binding SubmitCommand}" Content="Submit" Height="22" Width="80" />
+        <Button Command="{Binding SubmitCommand}" Content="Submit" />
         <TextBlock Text="{Binding Path=InteractionResultMessage}" />
     </StackPanel> 
 </UserControl>

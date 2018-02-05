@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\Github\HistoryManagement\HistoryManagement\App.xaml
-61951804281
+7-2100192527
 
 161882610026
-25-223275159
-LocalizedResources\CommonResource.xaml;LocalizedResources\Language.xaml;Settings\SubSettingItems\AddLibrarySettingTabItem.xaml;Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml;Shell.xaml;Settings\SettingWindow.xaml;
+27-592335248
+LocalizedResources\CommonResource.xaml;LocalizedResources\Language.xaml;Resource\ConverterDictionary.xaml;Settings\SubSettingItems\AddLibrarySettingTabItem.xaml;Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml;Shell.xaml;Settings\SettingWindow.xaml;
 
-False
+True
 

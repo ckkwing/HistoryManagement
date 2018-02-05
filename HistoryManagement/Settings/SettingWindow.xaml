@@ -3,14 +3,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:interaction="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:prism="http://www.codeplex.com/prism"
         xmlns:local="clr-namespace:HistoryManagement"
         xmlns:customDialog="clr-namespace:Theme.CustomControl.Dialog;assembly=Theme"
         xmlns:tabItems="clr-namespace:HistoryManagement.Settings.SubSettingItems"
-        WindowStartupLocation="CenterOwner"  Height="432" Width="702"  CanMinimize="Collapsed" >
+        xmlns:infrastucture="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
+        WindowStartupLocation="CenterOwner"  Height="432" Width="702"  CanMinimize="Collapsed" x:Name="settingWindow">
+    <i:Interaction.Triggers>
+        <prism:InteractionRequestTrigger SourceObject="{Binding   CloseRequest}">
+            <interaction:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=window}"/>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
     <Grid Background="#f2f2f2">
-        <TabControl Style="{DynamicResource SettingTabControlStyle}" SelectedIndex="{Binding SelectedIndex}">
-            <tabItems:ImportHistoryFilsSettingTabItem />
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>-->
+        <TabControl Grid.Row="0" Style="{DynamicResource SettingTabControlStyle}" SelectedIndex="{Binding SelectedIndex}">
             <tabItems:AddLibrarySettingTabItem />
+            <tabItems:ImportHistoryFilsSettingTabItem />
         </TabControl>
+        <!--<Grid Grid.Row="1" Height="44" Background="{StaticResource Brush_Highlight}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Save" />
+            <Button Grid.Column="1" Content="Cancel" />
+        </Grid>-->
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,11,10,11">
+            <Button Content="Save" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" />
+            <Button Content="Cancel" Command="{Binding Path=CancelCommand}" />
+        </StackPanel>
     </Grid>
 </customDialog:CommonDialog>

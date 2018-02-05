@@ -1,10 +1,12 @@
-﻿using System;
+﻿using HistoryManagement.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Utilities;
 using Utilities.Settings;
 
 namespace HistoryManagement
@@ -23,6 +25,10 @@ namespace HistoryManagement
             ResourceDictionary localizedCommonRes = LanguageSetting.LoadLocalizedCommonDictionary();
             Application.Current.Resources.MergedDictionaries.Add(localizedCommonRes);
 
+            FolderDefine.Instance.Init(string.Empty, string.Empty);
+            DBHelper.InitDBProfile();
+            DataManager.Instance.Init();
+
             Bootstrapper bootstrapper = new Bootstrapper();
             bootstrapper.Run();
 
@@ -31,6 +37,8 @@ namespace HistoryManagement
 
         protected override void OnExit(ExitEventArgs e)
         {
+            FolderDefine.Instance.Uninit();
+            DataManager.Instance.Uninit();
             base.OnExit(e);
         }
     }
