@@ -111,6 +111,10 @@
       <Project>{B35A650E-F36B-4811-8751-0C03A31147EB}</Project>
       <Name>HistoryManagement.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IDAL\IDAL.csproj">
+      <Project>{946f645b-7421-4e44-959a-881f5fbfcbd2}</Project>
+      <Name>IDAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

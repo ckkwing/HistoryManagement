@@ -10,33 +10,21 @@
         xmlns:customDialog="clr-namespace:Theme.CustomControl.Dialog;assembly=Theme"
         xmlns:tabItems="clr-namespace:HistoryManagement.Settings.SubSettingItems"
         xmlns:infrastucture="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
-        WindowStartupLocation="CenterOwner"  Height="432" Width="702"  CanMinimize="Collapsed" x:Name="settingWindow">
+        WindowStartupLocation="CenterOwner"  Height="432" Width="702"  CanMinimize="Collapsed" x:Name="settingWindow"
+        Loaded="settingWindow_Loaded" Unloaded="settingWindow_Unloaded">
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding   CloseRequest}">
             <interaction:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=window}"/>
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
     <Grid Background="#f2f2f2">
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>-->
         <TabControl Grid.Row="0" Style="{DynamicResource SettingTabControlStyle}" SelectedIndex="{Binding SelectedIndex}">
             <tabItems:AddLibrarySettingTabItem />
             <tabItems:ImportHistoryFilsSettingTabItem />
         </TabControl>
-        <!--<Grid Grid.Row="1" Height="44" Background="{StaticResource Brush_Highlight}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Save" />
-            <Button Grid.Column="1" Content="Cancel" />
-        </Grid>-->
-
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,11,10,11">
-            <Button Content="Save" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" />
-            <Button Content="Cancel" Command="{Binding Path=CancelCommand}" />
+            <Button Content="{StaticResource IDS_SAVE}" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" />
+            <Button Content="{StaticResource IDS_CANCEL}" Command="{Binding Path=CancelCommand}" />
         </StackPanel>
     </Grid>
 </customDialog:CommonDialog>

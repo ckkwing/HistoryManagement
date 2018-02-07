@@ -13,6 +13,8 @@ namespace SQLiteDAL
 {
     public class DBHistory : IDBHistory
     {
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED);";
+
         public void DeleteItems(IList<HistoryEntity> items)
         {
             throw new NotImplementedException("Do not delete anything!");
@@ -37,6 +39,8 @@ namespace SQLiteDAL
                 string[] arrayCategory = strCategories.Split(new char[] { ';' });
                 for(int i =0; i<arrayCategory.Length;i++)
                 {
+                    if (string.IsNullOrEmpty(arrayCategory[i]))
+                        continue;
                     item.CategoryIDs.Add(Convert.ToInt32(arrayCategory[i]));
                 }
                 item.IsDeleted = dr.GetInt32(6) == 1 ? true : false;
@@ -48,7 +52,56 @@ namespace SQLiteDAL
 
         public int InsertItems(IList<HistoryEntity> items)
         {
-            throw new NotImplementedException();
+            int iSuccessRows = 0;
+            if (0 == items.Count)
+                return iSuccessRows;
+
+            string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_HISTORY);
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PATH", DbType.String),
+                new SQLiteParameter("@NAME", DbType.String),
+                new SQLiteParameter("@STAR", DbType.Int32),
+                new SQLiteParameter("@COMMENT", DbType.String),
+                new SQLiteParameter("@CATEGORYIDS", DbType.String),
+                new SQLiteParameter("@ISDELETED", DbType.Int32)
+                    };
+
+            try
+            {
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+
+                foreach (HistoryEntity item in items)
+                {
+                    parms[0].Value = item.Path;
+                    parms[1].Value = item.Name;
+                    parms[2].Value = item.Star;
+                    parms[3].Value = item.Comment;
+                    string ids = string.Empty;
+                    foreach(int id in item.CategoryIDs)
+                    {
+                        ids += id.ToString();
+                    }
+                    parms[4].Value = ids;
+                    parms[5].Value = item.IsDeleted;
+                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return iSuccessRows;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using HistoryManagement.Infrastructure;
 using Prism.Commands;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Utilities.Extension;
 
 namespace HistoryManagement.Settings.SubSettingItems
 {
@@ -22,6 +24,7 @@ namespace HistoryManagement.Settings.SubSettingItems
     /// </summary>
     public partial class ImportHistoryFilsSettingTabItem : SettingBaseTabItem
     {
+        private IEventAggregator eventAggregator;
         public ICommand SaveCommand { get; private set; }
         public ImportHistoryFilsSettingTabItem()
         {
@@ -32,11 +35,13 @@ namespace HistoryManagement.Settings.SubSettingItems
 
         private void OnSave(object obj)
         {
-            MessageBox.Show("ImportHistoryFilsSettingTabItem onSave");
+            if (!this.eventAggregator.IsNull())
+                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = "" });
         }
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
         {
+            this.eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
             GlobalCommands.SaveAllSettingsCommand.RegisterCommand(SaveCommand);
         }
 

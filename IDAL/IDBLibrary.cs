@@ -11,6 +11,7 @@ namespace IDAL
     {
         IList<LibraryItemEntity> GetItems();
         int InsertItems(IList<LibraryItemEntity> items);
+        int UpdateItems(IList<LibraryItemEntity> items);
         void DeleteItems(IList<LibraryItemEntity> items);
     }
 }

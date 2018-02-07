@@ -1,12 +1,15 @@
-﻿using Prism.Commands;
+﻿using HistoryManagement.Infrastructure;
+using Prism.Commands;
 using Prism.Interactivity.InteractionRequest;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace HistoryManagement.Modules.Home.ViewModels
@@ -15,22 +18,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class HomeViewModel : BindableBase
     {
-        private string name = "HomeViewModel";
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-
-            set
-            {
-                name = value;
-                RaisePropertyChanged("Name");
-            }
-        }
-
+        public ICollectionView UIHistories { get; private set; }
         public ICommand SubmitCommand { get; private set; }
         public InteractionRequest<IConfirmation> ConfirmationRequest { get; private set; }
         private string interactionResultMessage = string.Empty;
@@ -51,6 +39,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
         {
             this.ConfirmationRequest = new InteractionRequest<IConfirmation>();
             this.SubmitCommand = new DelegateCommand<object>(this.OnSubmit, obj => { return true; });
+            UIHistories = new ListCollectionView(DataManager.Instance.Histories);
         }
 
         private void OnSubmit(object obj)

@@ -1,5 +1,4 @@
 ﻿using HistoryManagement.Modules.Home;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Mef;
 using System;
 using System.Collections.Generic;
@@ -12,8 +11,9 @@ using Prism.Regions;
 using Prism.Regions.Behaviors;
 using Prism.Mef.Regions.Behaviors;
 using HistoryManagement.Modules.Header;
-using CommonServiceLocator;
+//using CommonServiceLocator;
 using System.ComponentModel.Composition;
+using Microsoft.Practices.ServiceLocation;
 
 namespace HistoryManagement
 {

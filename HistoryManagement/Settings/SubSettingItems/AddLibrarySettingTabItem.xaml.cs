@@ -1,10 +1,13 @@
 ﻿using HistoryManagement.Infrastructure;
+using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
 using Prism.Commands;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +34,7 @@ namespace HistoryManagement.Settings.SubSettingItems
         public enum ScanRank
         {
             [Description("1")]
-            One,
+            One = 1,
             [Description("2")]
             Two,
             [Description("3")]
@@ -39,7 +42,7 @@ namespace HistoryManagement.Settings.SubSettingItems
             [Description("Unlimited")]
             Unlimited = -1
         }
-
+        private IEventAggregator eventAggregator;
         private string targetPath = string.Empty;
         public string TargetPath
         {
@@ -66,7 +69,7 @@ namespace HistoryManagement.Settings.SubSettingItems
             }
         }
 
-        private ScanRank selectedScanRank = ScanRank.Unlimited;
+        private ScanRank selectedScanRank = ScanRank.One;
         public ScanRank SelectedScanRank
         {
             get
@@ -81,8 +84,8 @@ namespace HistoryManagement.Settings.SubSettingItems
             }
         }
 
-        private ObservableCollection<LibraryItemEntity> cacheLibraryList = new ObservableCollection<LibraryItemEntity>();
-        public ObservableCollection<LibraryItemEntity> CacheLibraryList
+        private ObservableCollection<UILibraryItemEntity> cacheLibraryList = new ObservableCollection<UILibraryItemEntity>();
+        public ObservableCollection<UILibraryItemEntity> CacheLibraryList
         {
             get
             {
@@ -108,11 +111,12 @@ namespace HistoryManagement.Settings.SubSettingItems
             this.AddLibraryCommand = new DelegateCommand<object>(OnAddLibrary, obj => { return true; });
             this.SaveCommand = new DelegateCommand<object>(OnSave, obj => { return true; });
 
-            DataManager.Instance.LibraryItems.ToList().ForEach(item => CacheLibraryList.Add(item));
+            DataManager.Instance.LibraryItems.ToList().ForEach(item => CacheLibraryList.Add(UILibraryItemEntity.Create(item)));
         }
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
         {
+            this.eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
             GlobalCommands.SaveAllSettingsCommand.RegisterCommand(SaveCommand);
         }
 
@@ -123,24 +127,26 @@ namespace HistoryManagement.Settings.SubSettingItems
 
         private void OnSave(object obj)
         {
-            MessageBox.Show("AddLibrarySettingTabItem onSave");
+            DataManager.Instance.StartScanAndUpdateDB(CacheLibraryList);
+            if (!this.eventAggregator.IsNull())
+                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = "" });
         }
 
         private void OnBrowse(object obj)
         {
-            TargetPath = Infrastructure.InfrastructureUtility.BrowseFolder(ResourceProvider.LoadString("IDS_SETTINGS_LIBRARY_BROWSEINFO"), string.Empty);
+            TargetPath = InfrastructureUtility.BrowseFolder(ResourceProvider.LoadString("IDS_SETTINGS_LIBRARY_BROWSEINFO"), string.Empty);
         }
 
         private void OnAddLibrary(object obj)
         {
-            LibraryItemEntity item = (from library in CacheLibraryList
+            UILibraryItemEntity item = (from library in CacheLibraryList
                                       where (0 == string.Compare(library.Path, TargetPath, true))
-                                      select library).FirstOrDefault<LibraryItemEntity>();
+                                      select library).FirstOrDefault<UILibraryItemEntity>();
             if (item.IsNull())
             {
                 //Add to library
                 MessageBox.Show("new");
-                CacheLibraryList.Add(new LibraryItemEntity() { Path = TargetPath, Level = (int)SelectedScanRank });
+                CacheLibraryList.Add(new UILibraryItemEntity() { Path = TargetPath, Level = (int)SelectedScanRank });
             }
             else
             {
@@ -151,6 +157,7 @@ namespace HistoryManagement.Settings.SubSettingItems
                 else
                 {
                     MessageBox.Show("Exist need update");
+                    item.Level = (int)SelectedScanRank;
                 }
             }
             TargetPath = string.Empty;

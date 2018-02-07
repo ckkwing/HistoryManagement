@@ -8,29 +8,44 @@ using System.Threading.Tasks;
 
 namespace HistoryManagement.Infrastructure
 {
-    public sealed class DBHelper
+    internal sealed class DBHelper
     {
         private static readonly IDBEntity iDBEntity = DataAccess.CreateDBEntity();
         private static readonly IDBLibrary iDBLibrary = DataAccess.CreateLibrary();
         private static readonly IDBHistory iDBHistory = DataAccess.CreateHistory();
         private static readonly IDBCategory iDBCategory = DataAccess.CreateCategory();
 
-        public static bool InitDBProfile()
+        internal static bool InitDBProfile()
         {
             return iDBEntity.InitDBProfile();
         }
 
-        public static IList<LibraryItemEntity> GetLibraryItems()
+        internal static IList<LibraryItemEntity> GetLibraryItems()
         {
             return iDBLibrary.GetItems();
         }
 
-        public static IList<HistoryEntity> GetHistories()
+        internal static int AddLibraryItems(IList<LibraryItemEntity> items)
+        {
+            return iDBLibrary.InsertItems(items);
+        }
+
+        internal static int UpdateLibraryItems(IList<LibraryItemEntity> items)
+        {
+            return iDBLibrary.UpdateItems(items);
+        }
+
+        internal static IList<HistoryEntity> GetHistories()
         {
             return iDBHistory.GetItems();
         }
 
-        public static IList<CategoryEntity> GetCategories()
+        internal static int AddHistoryItems(IList<HistoryEntity> items)
+        {
+            return iDBHistory.InsertItems(items);
+        }
+
+        internal static IList<CategoryEntity> GetCategories()
         {
             return iDBCategory.GetItems();
         }

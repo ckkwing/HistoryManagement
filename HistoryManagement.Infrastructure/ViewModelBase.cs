@@ -129,7 +129,7 @@ namespace HistoryManagement.Infrastructure
         //    isDisposed = true;
         //}
 
-        bool _disposed = false;
+        protected bool _disposed = false;
         public void Dispose()
         {
             Dispose(true);

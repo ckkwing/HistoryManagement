@@ -13,6 +13,8 @@ namespace SQLiteDAL
 {
     public class DBLibrary : IDBLibrary
     {
+        private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_LIBRARY + " SET PATH = @PATH, LEVEL = @LEVEL, ISDELETED = @ISDELETED WHERE ID = {0};";
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, LEVEL, ISDELETED) VALUES (NULL, @PATH, @LEVEL, @ISDELETED);";
         public void DeleteItems(IList<LibraryItemEntity> items)
         {
             throw new NotImplementedException("Do not delete anything!");
@@ -40,7 +42,82 @@ namespace SQLiteDAL
 
         public int InsertItems(IList<LibraryItemEntity> items)
         {
-            throw new NotImplementedException();
+            int iSuccessRows = 0;
+            if (0 == items.Count)
+                return iSuccessRows;
+
+            string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_LIBRARY);
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PATH", DbType.String),
+                new SQLiteParameter("@LEVEL", DbType.Int32),
+                new SQLiteParameter("@ISDELETED", DbType.Int32)
+                    };
+
+            try
+            {
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+
+                foreach (LibraryItemEntity item in items)
+                {
+                    parms[0].Value = item.Path;
+                    parms[1].Value = item.Level;
+                    parms[2].Value = item.IsDeleted;
+                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return iSuccessRows;
+        }
+
+        public int UpdateItems(IList<LibraryItemEntity> items)
+        {
+            int iSuccessRows = 0;
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@PATH", DbType.String),
+                new SQLiteParameter("@LEVEL", DbType.Int32),
+                new SQLiteParameter("@ISDELETED", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (LibraryItemEntity file in items)
+                {
+                    string sqlUpdate = string.Format(sqlUpdateFormat, file.ID);
+                    parms[0].Value = file.Path;
+                    parms[1].Value = file.Level;
+                    parms[2].Value = file.IsDeleted;
+                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlUpdate, parms);
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return iSuccessRows;
         }
     }
 }

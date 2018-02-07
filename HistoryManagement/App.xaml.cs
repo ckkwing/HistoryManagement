@@ -26,7 +26,6 @@ namespace HistoryManagement
             Application.Current.Resources.MergedDictionaries.Add(localizedCommonRes);
 
             FolderDefine.Instance.Init(string.Empty, string.Empty);
-            DBHelper.InitDBProfile();
             DataManager.Instance.Init();
 
             Bootstrapper bootstrapper = new Bootstrapper();

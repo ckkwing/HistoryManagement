@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Theme.CustomControl.Dialog;
+using Utilities.Extension;
 
 namespace HistoryManagement.Settings
 {
@@ -41,5 +42,15 @@ namespace HistoryManagement.Settings
             this.DataContext = new SettingWindowViewModel();
         }
 
+        private void settingWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void settingWindow_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModel.IsNull())
+                ViewModel.Dispose();
+        }
     }
 }

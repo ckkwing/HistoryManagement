@@ -6,7 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:local="clr-namespace:HistoryManagement.Modules.Home.Views">
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
             <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
                 <prism:PopupWindowAction.WindowContent>
@@ -19,5 +19,13 @@
         <TextBlock Text="{Binding Path=Name}" />
         <Button Command="{Binding SubmitCommand}" Content="Submit" />
         <TextBlock Text="{Binding Path=InteractionResultMessage}" />
-    </StackPanel> 
+    </StackPanel>-->
+    <ListView Margin="10" ItemsSource="{Binding Path=UIHistories}">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_PATH}" DisplayMemberBinding="{Binding Path=Path}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
+               
+            </GridView>
+        </ListView.View>
+    </ListView>
 </UserControl>
