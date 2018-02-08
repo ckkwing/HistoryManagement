@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HistoryManagement.Settings.SubSettingItems"
              xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme"
+            xmlns:themeHelper="clr-namespace:Theme.Helper;assembly=Theme"
              Header="{StaticResource IDS_SETTINGS_HEADER_ADDLIBRARY}" Style="{StaticResource SettingTabItemStyle}"
              Loaded="SettingBaseTabItem_Loaded" Unloaded="SettingBaseTabItem_Unloaded">
     <Grid Margin="10,10,10,44">
@@ -24,11 +25,36 @@
             <ComboBox Grid.Column="2" Width="100" ItemsSource="{Binding Path=ScanRanks}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Path=SelectedScanRank}" />
             <Button Grid.Column="3" Content="{StaticResource IDS_ADD}" Margin="10,0,0,0" Command="{Binding Path=AddLibraryCommand}" />
         </Grid>
-        <ListView Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding Path=CacheLibraryList}">
+        <ListView Grid.Row="1" Margin="0,10,0,0" ItemsSource="{Binding Path=CacheLibraryList}"
+                        themeHelper:ListViewStyleHelper.SortDefaultStyle="{StaticResource NormalSortHeaderTemplate}"
+                        themeHelper:ListViewStyleHelper.SortAscStyle="{StaticResource AscSortHeaderTemplate}"
+                        themeHelper:ListViewStyleHelper.SortDescStyle="{StaticResource DescSortHeaderTemplate}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_PATH}" DisplayMemberBinding="{Binding Path=Path}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
-                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_RANK}" DisplayMemberBinding="{Binding Path=Level}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
+                <GridView ColumnHeaderContainerStyle="{StaticResource GridViewColumnHeader}">
+                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_PATH}"
+                                    HeaderStringFormat="Path" HeaderTemplate="{StaticResource NormalSortHeaderTemplate}">
+                        <GridViewColumn.Width>
+                            <MultiBinding Converter="{StaticResource AutoListViewColumnWidthMultiValueConverter}">
+                                <Binding Path="ActualWidth" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ListView}, AncestorLevel=1 }" />
+                                <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type ListView}, AncestorLevel=1 }" />
+                            </MultiBinding>
+                        </GridViewColumn.Width>
+                        <!--Don't use DisplayMemberBinding="{Binding Path=Path}" for GridViewGolumn-->
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate >
+                                <customControl:EnhancedTextBlock Text="{Binding Path}" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_RANK}"
+                                    HeaderStringFormat="Rank" HeaderTemplate="{StaticResource NormalSortHeaderTemplate}" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate >
+                                <customControl:EnhancedTextBlock Text="{Binding Level}" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

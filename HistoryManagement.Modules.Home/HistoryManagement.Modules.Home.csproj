@@ -115,6 +115,10 @@
       <Project>{946f645b-7421-4e44-959a-881f5fbfcbd2}</Project>
       <Name>IDAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WPFLib\Theme\Theme.csproj">
+      <Project>{72ced788-33bb-467d-b946-1e07be5055ae}</Project>
+      <Name>Theme</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

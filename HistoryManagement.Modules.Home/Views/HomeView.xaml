@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:local="clr-namespace:HistoryManagement.Modules.Home.Views">
+             xmlns:local="clr-namespace:HistoryManagement.Modules.Home.Views"
+             xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme">
     <!--<i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
             <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
@@ -20,11 +21,30 @@
         <Button Command="{Binding SubmitCommand}" Content="Submit" />
         <TextBlock Text="{Binding Path=InteractionResultMessage}" />
     </StackPanel>-->
-    <ListView Margin="10" ItemsSource="{Binding Path=UIHistories}">
+    <ListView Margin="10" ItemsSource="{Binding Path=UIHistories}" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListView.View>
             <GridView>
-                <GridViewColumn Header="{StaticResource IDS_SETTINGS_LIBRARY_PATH}" DisplayMemberBinding="{Binding Path=Path}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}"/>
-               
+                <GridViewColumn Header="{StaticResource IDS_HISTORY_PATH}" Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListView}, Converter={StaticResource AutoListViewColumnWidthConverter}}">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate >
+                            <customControl:EnhancedTextBlock Text="{Binding Path}" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="{StaticResource IDS_HISTORY_NAME}" Width="80">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate >
+                            <customControl:EnhancedTextBlock Text="{Binding Name}" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn Header="{StaticResource IDS_HISTORY_STAR}" Width="80">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate >
+                            <customControl:EnhancedTextBlock Text="{Binding Star}" VerticalAlignment="Center"  TextTrimming="CharacterEllipsis"/>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
             </GridView>
         </ListView.View>
     </ListView>

@@ -23,4 +23,9 @@
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_PATH" x:Key="IDS_SETTINGS_LIBRARY_PATH">Path</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_RANK" x:Key="IDS_SETTINGS_LIBRARY_RANK">Rank</System:String>
     <!---->
+    
+    <!--History-->
+    <System:String x:Uid="IDS_HISTORY_NAME" x:Key="IDS_HISTORY_NAME">Name</System:String>
+    <System:String x:Uid="IDS_HISTORY_PATH" x:Key="IDS_HISTORY_PATH">Path</System:String>
+    <System:String x:Uid="IDS_HISTORY_STAR" x:Key="IDS_HISTORY_STAR">Star</System:String>
 </ResourceDictionary>
