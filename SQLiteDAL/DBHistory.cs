@@ -13,7 +13,7 @@ namespace SQLiteDAL
 {
     public class DBHistory : IDBHistory
     {
-        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED);";
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED);" + DataAccess.SQL_SELECT_ID_LAST;
 
         public void DeleteItems(IList<HistoryEntity> items)
         {
@@ -86,7 +86,14 @@ namespace SQLiteDAL
                     }
                     parms[4].Value = ids;
                     parms[5].Value = item.IsDeleted;
-                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    //iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        item.ID = id;
+                    }
                 }
 
                 trans.Commit();

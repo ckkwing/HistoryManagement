@@ -14,6 +14,7 @@
     <System:String x:Uid="IDS_MUSIC" x:Key="IDS_MUSIC">Music</System:String>
     <System:String x:Uid="IDS_DOCUMENT" x:Key="IDS_DOCUMENT">Document</System:String>
     <System:String x:Uid="IDS_FOLDER" x:Key="IDS_FOLDER">Folder</System:String>
+    <System:String x:Uid="IDS_ALL" x:Key="IDS_ALL">All</System:String>
     <!---->
     
     <!--Settings-->

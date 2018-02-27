@@ -3,6 +3,7 @@ using IDAL.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -55,7 +56,14 @@ namespace HistoryManagement.Infrastructure
             {
                 return categories;
             }
+
+            //set
+            //{
+            //    categories = value;
+            //}
         }
+
+        
         #endregion
 
         public void Init()
@@ -88,6 +96,8 @@ namespace HistoryManagement.Infrastructure
             {
                 categories.Add(category);
             }
+
+
         }
 
         public int AddLibraryItems(IList<LibraryItemEntity> items)
@@ -160,7 +170,23 @@ namespace HistoryManagement.Infrastructure
                 IList<HistoryEntity> historyList = new List<HistoryEntity>();
                 foreach (var dir in dirList)
                 {
+                    string defaultCategoryName = dir.Parent.Name;
+                    CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
+                    if (category.IsNull())
+                    {
+                        category = new CategoryEntity() { ID = -1, Name = defaultCategoryName };
+                        if (1 == DBHelper.AddCategories(new List<CategoryEntity>() { category }))
+                        {
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                            {
+                                categories.Add(category);
+                            }));
+                            
+                        }
+                    }
                     HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = dir.Name, Path = dir.FullName, Comment = string.Empty };
+                    if (!category.IsNull())
+                        history.CategoryIDs.Add(category.ID);
                     historyList.Add(history);
                 }
                 DBHelper.AddHistoryItems(historyList);

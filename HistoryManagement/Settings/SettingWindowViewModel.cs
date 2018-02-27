@@ -1,4 +1,5 @@
 ﻿using HistoryManagement.Infrastructure;
+using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
@@ -38,7 +39,7 @@ namespace HistoryManagement.Settings
         public SettingWindowViewModel()
         {
             CancelCommand = new DelegateCommand<object>(OnCancel, CanExcute);
-            this.eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             if (!this.eventAggregator.IsNull())
                 this.eventAggregator.GetEvent<SubSettingSavedEvent>().Subscribe(OnSubSettingSaved, ThreadOption.UIThread);
             this.CloseRequest = new InteractionRequest<Notification>();

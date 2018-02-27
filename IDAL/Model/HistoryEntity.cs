@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IDAL.Model
 {
-    public class HistoryEntity
+    public class HistoryEntity : BindableBase
     {
         public int ID { get; set; }
         public string Path { get; set; }

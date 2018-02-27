@@ -49,5 +49,10 @@ namespace HistoryManagement.Infrastructure
         {
             return iDBCategory.GetItems();
         }
+
+        internal static int AddCategories(IList<CategoryEntity> items)
+        {
+            return iDBCategory.InsertItems(items);
+        }
     }
 }

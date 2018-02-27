@@ -10,5 +10,6 @@ namespace HistoryManagement.Infrastructure
     {
         public const string HeaderRegion = "HeaderRegion";
         public const string HomeRegion = "HomeRegion";
+        public const string NavigationRegion = "NavigationRegion";
     }
 }

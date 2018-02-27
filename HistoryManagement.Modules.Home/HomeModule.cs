@@ -11,7 +11,7 @@ using HistoryManagement.Infrastructure;
 
 namespace HistoryManagement.Modules.Home
 {
-    [ModuleExport(typeof(HomeModule), InitializationMode = InitializationMode.WhenAvailable)]
+    [ModuleExport(typeof(HomeModule), InitializationMode = InitializationMode.WhenAvailable, DependsOnModuleNames = new string[] { "NavigationModule" })]
     public class HomeModule : IModule
     {
         private readonly IRegionViewRegistry regionViewRegistry;

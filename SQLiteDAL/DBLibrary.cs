@@ -14,7 +14,7 @@ namespace SQLiteDAL
     public class DBLibrary : IDBLibrary
     {
         private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_LIBRARY + " SET PATH = @PATH, LEVEL = @LEVEL, ISDELETED = @ISDELETED WHERE ID = {0};";
-        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, LEVEL, ISDELETED) VALUES (NULL, @PATH, @LEVEL, @ISDELETED);";
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, LEVEL, ISDELETED) VALUES (NULL, @PATH, @LEVEL, @ISDELETED);" + DataAccess.SQL_SELECT_ID_LAST;
         public void DeleteItems(IList<LibraryItemEntity> items)
         {
             throw new NotImplementedException("Do not delete anything!");
@@ -65,7 +65,14 @@ namespace SQLiteDAL
                     parms[0].Value = item.Path;
                     parms[1].Value = item.Level;
                     parms[2].Value = item.IsDeleted;
-                    iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    //iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        item.ID = id;
+                    }
                 }
 
                 trans.Commit();

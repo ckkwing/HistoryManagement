@@ -25,6 +25,18 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HeaderRegion}" />
-        <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*" MinWidth="180" />
+                <ColumnDefinition Width="70*" MinWidth="180"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.NavigationRegion}" />
+            </Grid>
+            <GridSplitter Width="4" />
+            <Grid Grid.Column="1">
+                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
+            </Grid>
+        </Grid>
     </Grid>
 </customControl:BasicWindow>

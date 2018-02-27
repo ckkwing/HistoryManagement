@@ -1,4 +1,5 @@
 ﻿using HistoryManagement.Infrastructure;
+using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
 using System;
@@ -41,7 +42,7 @@ namespace HistoryManagement.Settings.SubSettingItems
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
         {
-            this.eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             GlobalCommands.SaveAllSettingsCommand.RegisterCommand(SaveCommand);
         }
 

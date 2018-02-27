@@ -13,6 +13,8 @@ namespace SQLiteDAL
 {
     public class DBCategory : IDBCategory
     {
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, NAME, DESCRIPTION) VALUES (NULL, @NAME, @DESCRIPTION);" + DataAccess.SQL_SELECT_ID_LAST;
+
         public void DeleteItems(IList<CategoryEntity> items)
         {
             throw new NotImplementedException("Do not delete anything!");
@@ -39,7 +41,50 @@ namespace SQLiteDAL
 
         public int InsertItems(IList<CategoryEntity> items)
         {
-            throw new NotImplementedException();
+            int iSuccessRows = 0;
+            if (0 == items.Count)
+                return iSuccessRows;
+
+            string sqlInsert = string.Format(sqlInsertFormat, DataAccess.TABLE_NAME_CATEGORY);
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@NAME", DbType.String),
+                new SQLiteParameter("@DESCRIPTION", DbType.String)
+            };
+
+            try
+            {
+                //SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+
+                foreach (CategoryEntity item in items)
+                {
+                    parms[0].Value = item.Name;
+                    parms[1].Value = item.Description;
+                    //iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
+                    object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
+                    if (null != objRel)
+                    {
+                        iSuccessRows++;
+                        int id = Convert.ToInt32(objRel);
+                        item.ID = id;
+                    }
+                }
+
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return iSuccessRows;
         }
     }
 }

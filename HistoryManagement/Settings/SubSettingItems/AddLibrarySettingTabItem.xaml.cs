@@ -1,6 +1,7 @@
 ﻿using HistoryManagement.Infrastructure;
 using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
+using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
 using System;
@@ -116,7 +117,7 @@ namespace HistoryManagement.Settings.SubSettingItems
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
         {
-            this.eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             GlobalCommands.SaveAllSettingsCommand.RegisterCommand(SaveCommand);
         }
 
@@ -129,7 +130,7 @@ namespace HistoryManagement.Settings.SubSettingItems
         {
             DataManager.Instance.StartScanAndUpdateDB(CacheLibraryList);
             if (!this.eventAggregator.IsNull())
-                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = "" });
+                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = this.GetType().Name });
         }
 
         private void OnBrowse(object obj)

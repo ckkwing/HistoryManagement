@@ -11,8 +11,7 @@ using Prism.Regions;
 using Prism.Regions.Behaviors;
 using Prism.Mef.Regions.Behaviors;
 using HistoryManagement.Modules.Header;
-//using CommonServiceLocator;
-using System.ComponentModel.Composition;
+using HistoryManagement.Modules.Navigation;
 using Microsoft.Practices.ServiceLocation;
 
 namespace HistoryManagement
@@ -37,6 +36,7 @@ namespace HistoryManagement
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Bootstrapper).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(HomeModule).Assembly));
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(HeaderModule).Assembly));
+            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(NavigationModule).Assembly));
         }
 
         //protected override IRegionBehaviorFactory ConfigureDefaultRegionBehaviors()
