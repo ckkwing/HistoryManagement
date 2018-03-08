@@ -17,12 +17,26 @@ namespace HistoryManagement.Modules.Header.ViewModels
     public class MenuViewModel : ViewModelBase
     {
         public ICommand OpenSettingWindowCommand { get; private set; }
+        public ICommand ViewByCategoryCommand { get; private set; }
+        public ICommand ViewByPathCommand { get; private set; }
         [Import]
         public IEventAggregator EventAggregator;
 
         public MenuViewModel()
         {
-            this.OpenSettingWindowCommand = new DelegateCommand<object>(OnOpenSettingWindow);
+            OpenSettingWindowCommand = new DelegateCommand<object>(OnOpenSettingWindow);
+            ViewByCategoryCommand = new DelegateCommand<object>(OnViewByCategory);
+            ViewByPathCommand = new DelegateCommand<object>(OnViewByPath);
+        }
+
+        private void OnViewByPath(object obj)
+        {
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.Path });
+        }
+
+        private void OnViewByCategory(object obj)
+        {
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.Category });
         }
 
         private void OnOpenSettingWindow(object obj)

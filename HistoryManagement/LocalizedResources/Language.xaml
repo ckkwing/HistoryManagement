@@ -17,6 +17,14 @@
     <System:String x:Uid="IDS_ALL" x:Key="IDS_ALL">All</System:String>
     <!---->
     
+    <!--Menu-->
+    <System:String x:Uid="IDS_MENU_FILE" x:Key="IDS_MENU_FILE">File</System:String>
+    <System:String x:Uid="IDS_MENU_VIEW" x:Key="IDS_MENU_VIEW">View</System:String>
+    <System:String x:Uid="IDS_MENU_VIEW_CATEGORY" x:Key="IDS_MENU_VIEW_CATEGORY">View by Category</System:String>
+    <System:String x:Uid="IDS_MENU_VIEW_PATH" x:Key="IDS_MENU_VIEW_PATH">View by Path</System:String>
+    <System:String x:Uid="IDS_MENU_SETTING" x:Key="IDS_MENU_SETTING">Setting</System:String>
+    <!---->
+    
     <!--Settings-->
     <System:String x:Uid="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES" x:Key="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES">Import history files</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_ADDLIBRARY" x:Key="IDS_SETTINGS_HEADER_ADDLIBRARY">Add Library</System:String>

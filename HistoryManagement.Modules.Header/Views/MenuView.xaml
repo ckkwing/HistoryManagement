@@ -5,7 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HistoryManagement.Modules.Header.Views">
     <StackPanel>
-        <TextBlock Text="Menu" />
-        <Button Content="Setting" Command="{Binding Path=OpenSettingWindowCommand}" />
+        <!--<TextBlock Text="Menu" />
+        <Button Content="Setting" Command="{Binding Path=OpenSettingWindowCommand}" />-->
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="_New" />
+                <MenuItem Header="_Open" />
+                <MenuItem Header="_Save" />
+                <Separator />
+                <MenuItem Header="{DynamicResource IDS_FOLDERMANAGER_TITLE}" Command="{Binding Path=OpenSettingWindowCommand}" />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="{StaticResource IDS_MENU_VIEW}">
+                <MenuItem Header="{StaticResource IDS_MENU_VIEW_CATEGORY}" Command="{Binding Path=ViewByCategoryCommand}" />
+                <MenuItem Header="{StaticResource IDS_MENU_VIEW_PATH}" Command="{Binding Path=ViewByPathCommand}" />
+            </MenuItem>
+            <MenuItem Header="{StaticResource IDS_MENU_SETTING}" Command="{Binding Path=OpenSettingWindowCommand}" />
+        </Menu>
     </StackPanel>
 </UserControl>

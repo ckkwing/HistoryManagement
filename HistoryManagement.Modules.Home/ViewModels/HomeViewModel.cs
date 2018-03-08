@@ -50,7 +50,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
             if (!this.eventAggregator.IsNull())
                 this.eventAggregator.GetEvent<ContentSelectionEvents>().Subscribe(OnContentSelected, ThreadOption.UIThread);
             UIHistories = CollectionViewSource.GetDefaultView(DataManager.Instance.Histories);
-            //UIHistories = new ListCollectionView(DataManager.Instance.Histories);
+            UIHistories.Filter = new Predicate<object>(GetNone);
         }
 
         ~HomeViewModel()
@@ -77,6 +77,11 @@ namespace HistoryManagement.Modules.Home.ViewModels
                 }
             }
             
+        }
+
+        private bool GetNone(object obj)
+        {
+            return false;
         }
 
         private bool GetAll(object obj)

@@ -1,4 +1,5 @@
 ﻿using HistoryManagement.Infrastructure.UIModel;
+using IDAL.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,41 +15,60 @@ namespace HistoryManagement.Infrastructure
         /// <summary>
         /// Consider as history items
         /// </summary>
-        private IList<DirectoryInfo> results = new List<DirectoryInfo>();
-        public IEnumerable<DirectoryInfo> Results
+        //private IList<DirectoryInfo> results = new List<DirectoryInfo>();
+        //public IEnumerable<DirectoryInfo> Results
+        //{
+        //    get
+        //    {
+        //        return results;
+        //    }
+        //}
+
+        //private IList<string> categories = new List<string>();
+        //public IEnumerable<string> Categories
+        //{
+        //    get
+        //    {
+        //        return categories;
+        //    }
+        //}
+
+        private IDictionary<LibraryItemEntity, IList<DirectoryInfo>> results = new Dictionary<LibraryItemEntity, IList<DirectoryInfo>>();
+        public IDictionary<LibraryItemEntity, IList<DirectoryInfo>> Results
         {
             get
             {
                 return results;
             }
-        }
 
-        private IList<string> categories = new List<string>();
-        public IEnumerable<string> Categories
-        {
-            get
+            set
             {
-                return categories;
+                results = value;
             }
         }
 
-        private IList<UILibraryItemEntity> entityToScan = null;
-        public HistoryScanner(IList<UILibraryItemEntity> entityToScan)
+        private IList<LibraryItemEntity> entityToScan = null;
+
+        
+
+        public HistoryScanner(IList<LibraryItemEntity> entityToScan)
         {
             this.entityToScan = entityToScan;
         }
 
         public void StartScan()
         {
-            foreach(UILibraryItemEntity entity in entityToScan)
+            foreach(LibraryItemEntity entity in entityToScan)
             {
                 if (!Directory.Exists(entity.Path))
                     break;
                 DirectoryInfo dir = new DirectoryInfo(entity.Path);
                 int currentRank = 0;
                 int rank = entity.Level == -1 ? 10000000 : entity.Level;
-                ScanDirectory(dir, rank, ref results, ref currentRank);
-                categories.Add(dir.Name);
+                IList<DirectoryInfo> children = new List<DirectoryInfo>();
+                ScanDirectory(dir, rank, ref children, ref currentRank);
+                //categories.Add(dir.Name);
+                Results.Add(new KeyValuePair<LibraryItemEntity, IList<DirectoryInfo>>(entity, children));
             }
         }
 

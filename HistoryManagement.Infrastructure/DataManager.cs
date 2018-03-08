@@ -1,5 +1,7 @@
-﻿using HistoryManagement.Infrastructure.UIModel;
+﻿using HistoryManagement.Infrastructure.Events;
+using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,7 +30,10 @@ namespace HistoryManagement.Infrastructure
             internal static readonly DataManager instance = new DataManager();
         }
 
-        DataManager() { }
+        DataManager()
+        {
+            
+        }
 
         #region Property
         private IList<LibraryItemEntity> libraryItems = new List<LibraryItemEntity>();
@@ -97,7 +102,16 @@ namespace HistoryManagement.Infrastructure
                 categories.Add(category);
             }
 
-
+            try
+            {
+                IEventAggregator eventAggregator = Microsoft.Practices.ServiceLocation.ServiceLocator.Current.GetInstance<IEventAggregator>();
+                if (!eventAggregator.IsNull())
+                    eventAggregator.GetEvent<DBDataRefreshedEvents>().Publish(new DBDataRefreshedEventEventArgs() { DBDataType = DBDataType.All });
+            }
+            catch(Exception e)
+            {
+                NLogger.LogHelper.UILogger.Debug(e);
+            }
         }
 
         public int AddLibraryItems(IList<LibraryItemEntity> items)
@@ -108,42 +122,17 @@ namespace HistoryManagement.Infrastructure
             return DBHelper.AddLibraryItems(items);
         }
 
-        public int AddLibraryItems(IList<UILibraryItemEntity> items)
+        public int UpdateLibraryItems(IList<LibraryItemEntity> items)
         {
             if (items.IsNull())
                 return 0;
-
-            IList<LibraryItemEntity> dbItems = new List<LibraryItemEntity>();
-            foreach (UILibraryItemEntity item in items)
-            {
-                LibraryItemEntity dbItem = UILibraryItemEntity.ToDBEntity(item);
-                dbItems.Add(dbItem);
-            }
-            return DBHelper.AddLibraryItems(dbItems);
-        }
-
-        public int UpdateLibraryItems(IList<UILibraryItemEntity> items)
-        {
-            if (items.IsNull())
-                return 0;
-
-            IList<LibraryItemEntity> dbItems = new List<LibraryItemEntity>();
-            foreach (UILibraryItemEntity item in items)
-            {
-                LibraryItemEntity dbItem = UILibraryItemEntity.ToDBEntity(item);
-                dbItems.Add(dbItem);
-            }
-            return DBHelper.UpdateLibraryItems(dbItems);
-        }
-
-        public void UpdateLibraryItems(IList<LibraryItemEntity> list)
-        {
-
+            
+            return DBHelper.UpdateLibraryItems(items);
         }
 
         #region Scanner
 
-        public void StartScanAndUpdateDB(IList<UILibraryItemEntity> list)
+        public void StartScanAndUpdateDB(IList<LibraryItemEntity> addList, IList<LibraryItemEntity> updateList)
         {
             //Action action = () => {
             //    HistoryScanner scanner = new HistoryScanner(CacheLibraryList);
@@ -153,24 +142,25 @@ namespace HistoryManagement.Infrastructure
             //action.BeginInvoke(ar => {
             //    ThreadHelper.EndInvokeAction(ar);
             //}, action);
-            var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
-            var updateList = list.Where(item => null != LibraryItems.FirstOrDefault(i => ((0 == string.Compare(i.Path, item.Path, true)) && i.Level != item.Level)));
+
+            //var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
+            //var updateList = list.Where(item => null != LibraryItems.FirstOrDefault(i => ((0 == string.Compare(i.Path, item.Path, true)) && i.Level != item.Level)));
             if (0 == addList.Count() && 0 == updateList.Count())
                 return;
 
-            Func<IEnumerable<DirectoryInfo>> function = () =>
+            Func<IDictionary<LibraryItemEntity, IList<DirectoryInfo>>> function = () =>
             {
                 AddLibraryItems(addList.ToList());
                 UpdateLibraryItems(updateList.ToList());
-
-                HistoryScanner scanner = new HistoryScanner(list);
+                List<LibraryItemEntity> allList = new List<LibraryItemEntity>();
+                allList.AddRange(addList);
+                allList.AddRange(updateList);
+                HistoryScanner scanner = new HistoryScanner(allList);
                 scanner.StartScan();
-
-                var dirList = scanner.Results.Where(item => !Histories.Any(i => 0 == string.Compare(i.Path, item.FullName, true)));
                 IList<HistoryEntity> historyList = new List<HistoryEntity>();
-                foreach (var dir in dirList)
+                foreach (KeyValuePair<LibraryItemEntity, IList<DirectoryInfo>> pair in scanner.Results)
                 {
-                    string defaultCategoryName = dir.Parent.Name;
+                    string defaultCategoryName = Path.GetFileName(pair.Key.Path);
                     CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
                     if (category.IsNull())
                     {
@@ -181,16 +171,43 @@ namespace HistoryManagement.Infrastructure
                             {
                                 categories.Add(category);
                             }));
-                            
+                        }
+
+                        foreach(DirectoryInfo scannedItem in pair.Value)
+                        {
+                            HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = scannedItem.Name, Path = scannedItem.FullName, Comment = string.Empty };
+                            if (!category.IsNull())
+                                history.CategoryIDs.Add(category.ID);
+                            historyList.Add(history);
                         }
                     }
-                    HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = dir.Name, Path = dir.FullName, Comment = string.Empty };
-                    if (!category.IsNull())
-                        history.CategoryIDs.Add(category.ID);
-                    historyList.Add(history);
                 }
-                DBHelper.AddHistoryItems(historyList);
+                
+                //var dirList = scannedFolders.Where(item => !Histories.Any(i => 0 == string.Compare(i.Path, item.FullName, true)));
+                
+                //foreach (var dir in dirList)
+                //{
+                //    string defaultCategoryName = dir.Parent.Name;
+                //    CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
+                //    if (category.IsNull())
+                //    {
+                //        category = new CategoryEntity() { ID = -1, Name = defaultCategoryName };
+                //        if (1 == DBHelper.AddCategories(new List<CategoryEntity>() { category }))
+                //        {
+                //            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                //            {
+                //                categories.Add(category);
+                //            }));
+                            
+                //        }
+                //    }
+                //    HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = dir.Name, Path = dir.FullName, Comment = string.Empty };
+                //    if (!category.IsNull())
+                //        history.CategoryIDs.Add(category.ID);
+                //    historyList.Add(history);
+                //}
 
+                DBHelper.AddHistoryItems(historyList);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
                     RefreshDBData();

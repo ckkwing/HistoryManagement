@@ -68,8 +68,12 @@
     <Compile Include="NavigationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CategoryNavigationViewModel.cs" />
+    <Compile Include="ViewModels\PathNavigationViewModel.cs" />
     <Compile Include="Views\CategoryNavigationView.xaml.cs">
       <DependentUpon>CategoryNavigationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PathNavigationView.xaml.cs">
+      <DependentUpon>PathNavigationView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +81,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CSharpUtility\NLogger\NLogger.csproj">
+      <Project>{2055c0d2-9e61-410d-b3b1-ea843e1c851f}</Project>
+      <Name>NLogger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CSharpUtility\Utilities\Utilities.csproj">
       <Project>{3362BCCC-3DDA-4DB8-8E91-E4FF3BA9FEA3}</Project>
       <Name>Utilities</Name>
@@ -92,6 +100,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\CategoryNavigationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PathNavigationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

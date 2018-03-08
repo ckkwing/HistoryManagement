@@ -47,7 +47,22 @@ namespace HistoryManagement.Infrastructure.UIModel
             }
         }
 
-        public ICollectionView Children { get; set; }
+
+        //public ICollectionView Children { get; set; }
+        private ObservableCollection<UICategoryEntity> children = new ObservableCollection<UICategoryEntity>();
+        public ObservableCollection<UICategoryEntity> Children
+        {
+            get
+            {
+                return children;
+            }
+
+            set
+            {
+                children = value;
+                RaisePropertyChanged("Children");
+            }
+        }
 
         public static UICategoryEntity CreateFrom(CategoryEntity category)
         {

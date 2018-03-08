@@ -1,4 +1,6 @@
 ﻿using HistoryManagement.Infrastructure;
+using HistoryManagement.Infrastructure.Events;
+using Prism.Events;
 using Prism.Mef.Modularity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -19,8 +21,9 @@ namespace HistoryManagement.Modules.Header
         [ImportingConstructor]
         public HeaderModule(IRegionViewRegistry registry)
         {
-            regionViewRegistry = registry;
+            this.regionViewRegistry = registry;
         }
+
         public void Initialize()
         {
             regionViewRegistry.RegisterViewWithRegion(RegionNames.HeaderRegion, typeof(Views.MenuView));

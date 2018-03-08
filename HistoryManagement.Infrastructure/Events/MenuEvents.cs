@@ -15,4 +15,18 @@ namespace HistoryManagement.Infrastructure.Events
     {
 
     }
+
+    public enum MenuViewType
+    {
+        Category,
+        Path
+    }
+    public class MenuViewEventArgs : EventArgs
+    {
+        public MenuViewType MenuViewType { get; set; }
+    }
+    public class MenuViewEvent : PubSubEvent<MenuViewEventArgs>
+    {
+
+    }
 }
