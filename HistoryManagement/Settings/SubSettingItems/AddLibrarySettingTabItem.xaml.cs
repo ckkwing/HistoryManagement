@@ -1,4 +1,5 @@
 ﻿using HistoryManagement.Infrastructure;
+using HistoryManagement.Infrastructure.Command;
 using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
 using Microsoft.Practices.ServiceLocation;
@@ -43,6 +44,7 @@ namespace HistoryManagement.Settings.SubSettingItems
             [Description("Unlimited")]
             Unlimited = -1
         }
+
         private IEventAggregator eventAggregator;
         private string targetPath = string.Empty;
         public string TargetPath
@@ -104,7 +106,7 @@ namespace HistoryManagement.Settings.SubSettingItems
 
         public ICommand BrowseCommand { get; private set; }
         public ICommand AddLibraryCommand { get; private set; }
-        public ICommand SaveCommand { get; private set; }
+        public IAsyncCommand SaveCommand { get; private set; }
 
         public AddLibrarySettingTabItem()
         {
@@ -113,10 +115,15 @@ namespace HistoryManagement.Settings.SubSettingItems
 
             this.BrowseCommand = new DelegateCommand<object>(OnBrowse, obj => { return true; });
             this.AddLibraryCommand = new DelegateCommand<object>(OnAddLibrary, obj => { return true; });
-            this.SaveCommand = new DelegateCommand<object>(OnSave, obj => { return true; });
+            SaveCommand = new AsyncDelegateCommand<object>(OnSaveEx, obj => { return true; });
             newAddedList.Clear();
             updatedList.Clear();
             DataManager.Instance.LibraryItems.ToList().ForEach(item => CacheLibraryList.Add(item));
+        }
+
+        private Task OnSaveEx(object arg)
+        {
+            return null;
         }
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
@@ -133,8 +140,6 @@ namespace HistoryManagement.Settings.SubSettingItems
         private void OnSave(object obj)
         {
             DataManager.Instance.StartScanAndUpdateDB(newAddedList, updatedList);
-            if (!this.eventAggregator.IsNull())
-                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = this.GetType().Name });
         }
 
         private void OnBrowse(object obj)

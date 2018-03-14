@@ -8,31 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Utilities.Extension;
 
-namespace HistoryManagement.Infrastructure
+namespace HistoryManagement.Infrastructure.Scanner
 {
     public class HistoryScanner
     {
-        /// <summary>
-        /// Consider as history items
-        /// </summary>
-        //private IList<DirectoryInfo> results = new List<DirectoryInfo>();
-        //public IEnumerable<DirectoryInfo> Results
-        //{
-        //    get
-        //    {
-        //        return results;
-        //    }
-        //}
-
-        //private IList<string> categories = new List<string>();
-        //public IEnumerable<string> Categories
-        //{
-        //    get
-        //    {
-        //        return categories;
-        //    }
-        //}
-
         private IDictionary<LibraryItemEntity, IList<DirectoryInfo>> results = new Dictionary<LibraryItemEntity, IList<DirectoryInfo>>();
         public IDictionary<LibraryItemEntity, IList<DirectoryInfo>> Results
         {

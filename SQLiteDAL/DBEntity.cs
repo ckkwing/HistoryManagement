@@ -56,6 +56,16 @@ namespace SQLiteDAL
         {
             if (Helper.TabbleIsExist(DataAccess.TABLE_NAME_HISTORY))
                 return;
+            //string sqlFormat = @"CREATE TABLE {0}(
+            //                                                        ID INTEGER PRIMARY KEY   AUTOINCREMENT,
+            //                                                        PATH TEXT NOT NULL,
+            //                                                        NAME TEXT NOT NULL,
+            //                                                        STAR INTEGER,
+            //                                                        COMMENT TEXT,
+            //                                                        CATEGORYIDS TEXT,
+            //                                                        ISDELETED INTEGER DEFAULT 0,
+            //                                                        LIBRARYID INTEGER NOT NULL
+            //                                                        );";
             string sqlFormat = @"CREATE TABLE {0}(
                                                                     ID INTEGER PRIMARY KEY   AUTOINCREMENT,
                                                                     PATH TEXT NOT NULL,
@@ -63,9 +73,12 @@ namespace SQLiteDAL
                                                                     STAR INTEGER,
                                                                     COMMENT TEXT,
                                                                     CATEGORYIDS TEXT,
-                                                                    ISDELETED INTEGER DEFAULT 0
+                                                                    ISDELETED INTEGER DEFAULT 0,
+                                                                    LIBRARYID INTEGER NOT NULL,
+                                                                    foreign key (LIBRARYID) references {1}(ID) on delete cascade
                                                                     );";
-            string sql = string.Format(sqlFormat, DataAccess.TABLE_NAME_HISTORY);
+            //string sql = string.Format(sqlFormat, DataAccess.TABLE_NAME_HISTORY);
+            string sql = string.Format(sqlFormat, DataAccess.TABLE_NAME_HISTORY, DataAccess.TABLE_NAME_LIBRARY);
             SqliteHelper.ExecuteNonQuery(DataAccess.ConnectionStringProfile, CommandType.Text, sql, null);
         }
     }

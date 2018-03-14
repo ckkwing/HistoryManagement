@@ -15,10 +15,7 @@ namespace SQLiteDAL
     {
         private readonly string sqlUpdateFormat = @"UPDATE " + DataAccess.TABLE_NAME_LIBRARY + " SET PATH = @PATH, LEVEL = @LEVEL, ISDELETED = @ISDELETED WHERE ID = {0};";
         private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, LEVEL, ISDELETED) VALUES (NULL, @PATH, @LEVEL, @ISDELETED);" + DataAccess.SQL_SELECT_ID_LAST;
-        public void DeleteItems(IList<LibraryItemEntity> items)
-        {
-            throw new NotImplementedException("Do not delete anything!");
-        }
+        private readonly string sqlDeleteFormat = "PRAGMA foreign_keys=ON;DELETE FROM {0} WHERE ID=@ID";
 
         public IList<LibraryItemEntity> GetItems()
         {
@@ -125,6 +122,39 @@ namespace SQLiteDAL
                 conn.Close();
             }
             return iSuccessRows;
+        }
+
+        public void DeleteItems(IList<LibraryItemEntity> items)
+        {
+            if (0 == items.Count)
+                return;
+
+            string sqlDelete = string.Format(sqlDeleteFormat, DataAccess.TABLE_NAME_LIBRARY);
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@ID", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (LibraryItemEntity item in items)
+                {
+                    parms[0].Value = item.ID;
+                    SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                }
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
     }
 }

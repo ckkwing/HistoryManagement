@@ -13,7 +13,7 @@ namespace SQLiteDAL
 {
     public class DBHistory : IDBHistory
     {
-        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED);" + DataAccess.SQL_SELECT_ID_LAST;
+        private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED, LIBRARYID) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED, @LIBRARYID);" + DataAccess.SQL_SELECT_ID_LAST;
 
         public void DeleteItems(IList<HistoryEntity> items)
         {
@@ -44,6 +44,7 @@ namespace SQLiteDAL
                     item.CategoryIDs.Add(Convert.ToInt32(arrayCategory[i]));
                 }
                 item.IsDeleted = dr.GetInt32(6) == 1 ? true : false;
+                item.LibraryID = dr.GetInt32(7);
                 items.Add(item);
             }
             dr.Close();
@@ -66,7 +67,8 @@ namespace SQLiteDAL
                 new SQLiteParameter("@STAR", DbType.Int32),
                 new SQLiteParameter("@COMMENT", DbType.String),
                 new SQLiteParameter("@CATEGORYIDS", DbType.String),
-                new SQLiteParameter("@ISDELETED", DbType.Int32)
+                new SQLiteParameter("@ISDELETED", DbType.Int32),
+                new SQLiteParameter("@LIBRARYID", DbType.Int32)
                     };
 
             try
@@ -86,6 +88,7 @@ namespace SQLiteDAL
                     }
                     parms[4].Value = ids;
                     parms[5].Value = item.IsDeleted;
+                    parms[6].Value = item.LibraryID;
                     //iSuccessRows += SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlInsert, parms);
                     object objRel = SqliteHelper.ExecuteScalar(DataAccess.ConnectionStringProfile, CommandType.Text, sqlInsert, parms);
                     if (null != objRel)

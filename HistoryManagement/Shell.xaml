@@ -4,39 +4,76 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HistoryManagement"
+        xmlns:setting="clr-namespace:HistoryManagement.Settings"
         xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme"
         xmlns:prism="http://www.codeplex.com/prism"
         xmlns:inf="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         WindowStartupLocation="CenterScreen" ShowInTaskbar="True"
         Title="Shell" Height="600" Width="900">
-    <!--<i:Interaction.Triggers>
-        <prism:InteractionRequestTrigger SourceObject="{Binding OpenSettingWindowRequest, Mode=OneWay}">
-            <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
-                <prism:PopupWindowAction.WindowContent>
-                    <local:SettingWindow />
-                </prism:PopupWindowAction.WindowContent>
-            </prism:PopupWindowAction>
-        </prism:InteractionRequestTrigger>
-    </i:Interaction.Triggers>-->
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HeaderRegion}" />
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*" MinWidth="180" />
-                <ColumnDefinition Width="70*" MinWidth="180"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.NavigationRegion}" />
+        <i:Interaction.Triggers>
+            <prism:InteractionRequestTrigger SourceObject="{Binding OpenSettingWindowRequest, Mode=OneWay}">
+                <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
+                    <prism:PopupWindowAction.WindowContent>
+                        <setting:SettingWindow />
+                    </prism:PopupWindowAction.WindowContent>
+                </prism:PopupWindowAction>
+            </prism:InteractionRequestTrigger>
+        </i:Interaction.Triggers>
+
+        <i:Interaction.Behaviors>
+            <ei:DataStateBehavior Binding="{Binding InProgress}" 
+                                  Value="True" 
+                                  TrueState="InProgress" FalseState="NotInProgress"/>
+        </i:Interaction.Behaviors>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ProgressStates">
+                <VisualState x:Name="NotInProgress"/>
+
+                <VisualState x:Name="InProgress">
+                    <Storyboard>
+
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="InProgressIndicator">
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentControl Grid.Row="0" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HeaderRegion}" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*" MinWidth="180" />
+                    <ColumnDefinition Width="70*" MinWidth="180"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <ContentControl prism:RegionManager.RegionName="{x:Static inf:RegionNames.NavigationRegion}" />
+                </Grid>
+                <GridSplitter Width="4" />
+                <Grid Grid.Column="1">
+                    <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
+                </Grid>
             </Grid>
-            <GridSplitter Width="4" />
-            <Grid Grid.Column="1">
-                <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
-            </Grid>
+
+
         </Grid>
+
+        <customControl:BusyIndicator x:Name="InProgressIndicator" Information="Saving data..." Visibility="Collapsed">
+        </customControl:BusyIndicator>
     </Grid>
+
 </customControl:BasicWindow>

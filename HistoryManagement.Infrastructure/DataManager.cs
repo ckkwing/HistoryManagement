@@ -1,5 +1,5 @@
 ﻿using HistoryManagement.Infrastructure.Events;
-using HistoryManagement.Infrastructure.UIModel;
+using HistoryManagement.Infrastructure.Scanner;
 using IDAL.Model;
 using Prism.Events;
 using System;
@@ -130,7 +130,76 @@ namespace HistoryManagement.Infrastructure
             return DBHelper.UpdateLibraryItems(items);
         }
 
+        public void DeleteLibraryItems(IList<LibraryItemEntity> items)
+        {
+            if (items.IsNull())
+                return;
+
+            DBHelper.DeleteLibraryItems(items);
+        }
+
         #region Scanner
+
+        public void StartScanAndUpdateDB(IList<LibraryItemEntity> list, Action callback)
+        {
+            //var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
+            //var updateList = list.Where(item => null != LibraryItems.FirstOrDefault(i => ((0 == string.Compare(i.Path, item.Path, true)) && i.Level != item.Level)));
+            //StartScanAndUpdateDB(addList.ToList(), updateList.ToList());
+
+            
+            Func<IDictionary<LibraryItemEntity, IList<DirectoryInfo>>> function = () =>
+            {
+                var removeList = LibraryItems.Where(item => list.FirstOrDefault(i => 0 == string.Compare(i.Path, item.Path, true)).IsNull());
+                var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
+                DeleteLibraryItems(removeList.ToList());
+
+
+                AddLibraryItems(addList.ToList());
+                HistoryScanner scanner = new HistoryScanner(addList.ToList());
+                scanner.StartScan();
+
+                IList<HistoryEntity> historyList = new List<HistoryEntity>();
+                foreach (KeyValuePair<LibraryItemEntity, IList<DirectoryInfo>> pair in scanner.Results)
+                {
+                    string defaultCategoryName = Path.GetFileName(pair.Key.Path);
+                    CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
+                    if (category.IsNull())
+                    {
+                        category = new CategoryEntity() { ID = -1, Name = defaultCategoryName };
+                        if (1 == DBHelper.AddCategories(new List<CategoryEntity>() { category }))
+                        {
+                            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
+                            {
+                                categories.Add(category);
+                            }));
+                        }
+
+                        foreach (DirectoryInfo scannedItem in pair.Value)
+                        {
+                            HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = scannedItem.Name, Path = scannedItem.FullName, Comment = string.Empty, LibraryID =  pair.Key.ID};
+                            if (!category.IsNull())
+                                history.CategoryIDs.Add(category.ID);
+                            historyList.Add(history);
+                        }
+                    }
+                }
+
+                DBHelper.AddHistoryItems(historyList);
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                {
+                    RefreshDBData();
+                    if (!callback.IsNull())
+                        callback();
+                }));
+
+                
+                return scanner.Results;
+            };
+
+            function.BeginInvoke(ar => {
+                IEnumerable<DirectoryInfo> results = ThreadHelper.EndInvokeFunc<IEnumerable<DirectoryInfo>>(ar);
+            }, function);
+        }
 
         public void StartScanAndUpdateDB(IList<LibraryItemEntity> addList, IList<LibraryItemEntity> updateList)
         {
@@ -142,9 +211,7 @@ namespace HistoryManagement.Infrastructure
             //action.BeginInvoke(ar => {
             //    ThreadHelper.EndInvokeAction(ar);
             //}, action);
-
-            //var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
-            //var updateList = list.Where(item => null != LibraryItems.FirstOrDefault(i => ((0 == string.Compare(i.Path, item.Path, true)) && i.Level != item.Level)));
+            
             if (0 == addList.Count() && 0 == updateList.Count())
                 return;
 
@@ -183,30 +250,6 @@ namespace HistoryManagement.Infrastructure
                     }
                 }
                 
-                //var dirList = scannedFolders.Where(item => !Histories.Any(i => 0 == string.Compare(i.Path, item.FullName, true)));
-                
-                //foreach (var dir in dirList)
-                //{
-                //    string defaultCategoryName = dir.Parent.Name;
-                //    CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
-                //    if (category.IsNull())
-                //    {
-                //        category = new CategoryEntity() { ID = -1, Name = defaultCategoryName };
-                //        if (1 == DBHelper.AddCategories(new List<CategoryEntity>() { category }))
-                //        {
-                //            Application.Current.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() =>
-                //            {
-                //                categories.Add(category);
-                //            }));
-                            
-                //        }
-                //    }
-                //    HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = dir.Name, Path = dir.FullName, Comment = string.Empty };
-                //    if (!category.IsNull())
-                //        history.CategoryIDs.Add(category.ID);
-                //    historyList.Add(history);
-                //}
-
                 DBHelper.AddHistoryItems(historyList);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {

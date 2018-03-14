@@ -16,5 +16,6 @@ namespace IDAL.Model
         public string Comment { get; set; }
         public IList<int> CategoryIDs { get; set; } = new List<int>();
         public bool IsDeleted { get; set; }
+        public int LibraryID { get; set; }
     }
 }

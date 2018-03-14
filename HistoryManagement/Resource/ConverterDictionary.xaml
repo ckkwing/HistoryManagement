@@ -4,4 +4,5 @@
                     xmlns:themeConverter="clr-namespace:Theme.Converters;assembly=Theme">
     <themeConverter:AutoListViewColumnWidthConverter x:Key="AutoListViewColumnWidthConverter" />
     <themeConverter:AutoListViewColumnWidthMultiValueConverter x:Key="AutoListViewColumnWidthMultiValueConverter" />
+    <themeConverter:BoolToVisibilityCollapseConverter x:Key="BoolToVisibilityCollapseConverter" />
 </ResourceDictionary>

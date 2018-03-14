@@ -78,7 +78,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper.cs" />
-    <Compile Include="Settings\SettingEvent.cs" />
+    <Compile Include="Services\ISettingService.cs" />
+    <Compile Include="Services\SettingService.cs" />
     <Compile Include="Settings\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -167,6 +168,10 @@
       <Project>{3362bccc-3dda-4db8-8e91-e4ff3ba9fea3}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\FileExplorer\FileExplorer.csproj">
+      <Project>{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}</Project>
+      <Name>FileExplorer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HistoryManagement.Infrastructure\HistoryManagement.Infrastructure.csproj">
       <Project>{b35a650e-f36b-4811-8751-0c03a31147eb}</Project>
       <Name>HistoryManagement.Infrastructure</Name>
@@ -194,7 +199,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

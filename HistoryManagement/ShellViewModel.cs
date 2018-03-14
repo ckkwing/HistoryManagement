@@ -1,5 +1,6 @@
 ﻿using HistoryManagement.Infrastructure;
 using HistoryManagement.Infrastructure.Events;
+using HistoryManagement.Services;
 using HistoryManagement.Settings;
 using Prism.Events;
 using Prism.Interactivity.InteractionRequest;
@@ -20,8 +21,29 @@ namespace HistoryManagement
         [Import(AllowRecomposition = false)]
         public IModuleManager ModuleManager;
         public IEventAggregator EventAggregator;
+        [Import]
+        ISettingService SettingService;
 
-        public InteractionRequest<INotification> OpenSettingWindowRequest { get; private set; }
+        private readonly InteractionRequest<SettingWindowViewModel> openSettingWindowRequest;
+        public IInteractionRequest OpenSettingWindowRequest
+        {
+            get { return this.openSettingWindowRequest; }
+        }
+
+        private bool inProgress = false;
+        public bool InProgress
+        {
+            get
+            {
+                return inProgress;
+            }
+
+            private set
+            {
+                inProgress = value;
+                RaisePropertyChanged("InProgress");
+            }
+        }
 
         [ImportingConstructor]
         public ShellViewModel(IEventAggregator eventAggregator)
@@ -29,7 +51,7 @@ namespace HistoryManagement
             this.EventAggregator = eventAggregator;
             this.EventAggregator.GetEvent<OpenSettingEvent>().Subscribe(OnOpenSettingWindow, ThreadOption.UIThread);
 
-            this.OpenSettingWindowRequest = new InteractionRequest<INotification>();
+            this.openSettingWindowRequest = new InteractionRequest<SettingWindowViewModel>();
         }
 
         ~ShellViewModel()
@@ -39,20 +61,26 @@ namespace HistoryManagement
 
         private void OnOpenSettingWindow(SettingEventArgs obj)
         {
-            //    this.ConfirmationRequest.Raise(
-            //new Confirmation { Content = "Confirmation Message", Title = "Confirmation" },
-            //c => { InteractionResultMessage = c.Confirmed ? "The user accepted." : "The user cancelled."; });
+            SettingWindowViewModel viewModel = new SettingWindowViewModel();
 
-            //this.OpenSettingWindowRequest.Raise(new Notification() { Title = "Setting Window", Content = "This is the setting window" }, OnSettingWindowClosed);
+            this.openSettingWindowRequest.Raise(
+                viewModel,
+                openSetting =>
+                {
+                    if (openSetting.Confirmed)
+                    {
+                        this.InProgress = true;
+                        
+                        SettingService.SaveLibrary(
+                            viewModel.SelectedFileList,
+                            () => {
+                                this.InProgress = false;
+                            });
+                    }
+                });
 
-            SettingWindow win = new SettingWindow();
-            win.ShowDialog();
+             
         }
-
-        //private void OnSettingWindowClosed(INotification obj)
-        //{
-        //    ;
-        //}
 
         #region IPartImportsSatisfiedNotification Members
         public void OnImportsSatisfied()

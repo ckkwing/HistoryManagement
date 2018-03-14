@@ -15,7 +15,7 @@ namespace IDAL
         public static readonly string DBFolder = Helper.DatabaseFolder;
         public static readonly string DBName = @"hisotry.db";
         public static readonly string DBFilePath = string.Format(@"{0}\{1}", DBFolder, DBName);
-        public static readonly string ConnectionStringProfile = string.Format("Data Source={0};Version=3;", DBFilePath);
+        public static readonly string ConnectionStringProfile = string.Format("Data Source={0};Version=3;foreign keys=true", DBFilePath);
         public static readonly string TABLE_NAME_CATEGORY = @"Category";
         public static readonly string TABLE_NAME_HISTORY = @"History";
         public static readonly string TABLE_NAME_LIBRARY = @"Library";

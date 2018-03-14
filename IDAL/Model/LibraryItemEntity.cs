@@ -11,7 +11,7 @@ namespace IDAL.Model
     {
         private int id = 0;
         private string path = string.Empty;
-        private int level = 0;
+        private int level = -1; //-1 is unlimited
         private bool isDeleted = false;
 
         public int ID

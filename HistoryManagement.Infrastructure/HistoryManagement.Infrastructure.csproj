@@ -91,13 +91,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Command\AsyncCompositeCommand.cs" />
+    <Compile Include="Command\AsyncDelegateCommand.cs" />
+    <Compile Include="Command\IAsyncCommand.cs" />
     <Compile Include="DataManager.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="Events\ContentSelectionEvents.cs" />
     <Compile Include="Events\DBDataRefreshedEvents.cs" />
     <Compile Include="Events\MenuEvents.cs" />
     <Compile Include="GlobalCommands.cs" />
-    <Compile Include="HistoryScanner.cs" />
+    <Compile Include="Scanner\HistoryScanner.cs" />
     <Compile Include="InfrastructureUtility.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

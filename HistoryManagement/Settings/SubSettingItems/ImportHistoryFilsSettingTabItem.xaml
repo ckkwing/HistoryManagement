@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:HistoryManagement.Settings.SubSettingItems"
+             xmlns:fileExplorer="clr-namespace:FileExplorer;assembly=FileExplorer"
              Header="{StaticResource IDS_SETTINGS_HEADER_IMPORTHISTORYFILES}" Style="{StaticResource SettingTabItemStyle}"
              Loaded="SettingBaseTabItem_Loaded" Unloaded="SettingBaseTabItem_Unloaded">
     <Grid>
-        <TextBlock Text="{StaticResource IDS_SETTINGS_HEADER_IMPORTHISTORYFILES}" />
+        <!--<TextBlock Text="{StaticResource IDS_SETTINGS_HEADER_IMPORTHISTORYFILES}" />-->
+        <fileExplorer:UITreeView DataContext="{Binding TreeViewModel}" />
     </Grid>
 </local:SettingBaseTabItem>

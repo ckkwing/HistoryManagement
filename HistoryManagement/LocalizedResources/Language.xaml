@@ -26,6 +26,7 @@
     <!---->
     
     <!--Settings-->
+    <System:String x:Uid="IDS_SETTING" x:Key="IDS_SETTING">Setting</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES" x:Key="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES">Import history files</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_ADDLIBRARY" x:Key="IDS_SETTINGS_HEADER_ADDLIBRARY">Add Library</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_BROWSEINFO" x:Key="IDS_SETTINGS_LIBRARY_BROWSEINFO">Choose your folder to library</System:String>

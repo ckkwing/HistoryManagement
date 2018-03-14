@@ -1,4 +1,4 @@
-﻿<customDialog:CommonDialog x:Class="HistoryManagement.Settings.SettingWindow"
+﻿<UserControl x:Class="HistoryManagement.Settings.SettingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,8 +10,7 @@
         xmlns:customDialog="clr-namespace:Theme.CustomControl.Dialog;assembly=Theme"
         xmlns:tabItems="clr-namespace:HistoryManagement.Settings.SubSettingItems"
         xmlns:infrastucture="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
-        WindowStartupLocation="CenterOwner"  Height="432" Width="702"  CanMinimize="Collapsed" x:Name="settingWindow"
-        Loaded="settingWindow_Loaded" Unloaded="settingWindow_Unloaded">
+       Height="432" Width="702" x:Name="settingWindow">
     <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding   CloseRequest}">
             <interaction:CallMethodAction MethodName="Close" TargetObject="{Binding ElementName=window}"/>
@@ -19,12 +18,12 @@
     </i:Interaction.Triggers>
     <Grid Background="#f2f2f2">
         <TabControl Grid.Row="0" Style="{DynamicResource SettingTabControlStyle}" SelectedIndex="{Binding SelectedIndex}">
-            <tabItems:AddLibrarySettingTabItem />
+            <!--<tabItems:AddLibrarySettingTabItem />-->
             <tabItems:ImportHistoryFilsSettingTabItem />
         </TabControl>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,11,10,11">
-            <Button Content="{StaticResource IDS_SAVE}" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" />
+            <Button Content="{StaticResource IDS_SAVE}" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" CommandParameter="{Binding}" />
             <Button Content="{StaticResource IDS_CANCEL}" Command="{Binding Path=CancelCommand}" />
         </StackPanel>
     </Grid>
-</customDialog:CommonDialog>
+</UserControl>

@@ -1,4 +1,6 @@
-﻿using HistoryManagement.Infrastructure;
+﻿using FileExplorer.Model;
+using HistoryManagement.Infrastructure;
+using HistoryManagement.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
@@ -10,14 +12,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Utilities.Common;
 using Utilities.Extension;
 
 namespace HistoryManagement.Settings
 {
-    public class SettingWindowViewModel : ViewModelBase
+    public class SettingWindowViewModel : ViewModelBase, IConfirmation, IInteractionRequestAware
     {
-        private IEventAggregator eventAggregator;
-        private int receivedSavedEvent = 0;
+        //private IEventAggregator eventAggregator;
+        public IList<IFolder> SelectedFileList { get; set; }
         private int selectedIndex = 0;
         public int SelectedIndex
         {
@@ -32,38 +35,42 @@ namespace HistoryManagement.Settings
                 RaisePropertyChanged("SelectedIndex");
             }
         }
-
-        public InteractionRequest<Notification> CloseRequest { get; set; }
         public ICommand CancelCommand { get; private set; }
+
+        #region IConfirmation
+        public bool Confirmed { get; set; }
+        public string Title { get; set; }
+        public object Content { get; set; }
+        #endregion
+
+        #region IInteractionRequestAware
+        public INotification Notification { get; set; }
+
+        public Action FinishInteraction { get; set; }
+        #endregion
 
         public SettingWindowViewModel()
         {
+            this.Title = ResourceProvider.LoadString("IDS_SETTING");
             CancelCommand = new DelegateCommand<object>(OnCancel, CanExcute);
-            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            if (!this.eventAggregator.IsNull())
-                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Subscribe(OnSubSettingSaved, ThreadOption.UIThread);
-            this.CloseRequest = new InteractionRequest<Notification>();
+            //this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            GlobalCommands.SaveAllSettingsCommand.SetCallback(OnSettingSaved);
         }
 
-        private void OnSubSettingSaved(SubSettingArgs obj)
+        private void OnSettingSaved(object obj)
         {
-            lock(this)
-            {
-                receivedSavedEvent++;
-                if (2 == receivedSavedEvent)
-                    this.CloseRequest.Raise(new Notification());
-            }
+            this.Confirmed = true;
+            this.FinishInteraction();
         }
 
         private void OnCancel(object obj)
         {
-            this.CloseRequest.Raise(new Notification());
+            this.Confirmed = false;
+            this.FinishInteraction();
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (!this.eventAggregator.IsNull())
-                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Unsubscribe(OnSubSettingSaved);
             base.Dispose(disposing);
         }
     }

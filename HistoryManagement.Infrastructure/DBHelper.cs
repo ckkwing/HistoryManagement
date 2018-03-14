@@ -35,6 +35,11 @@ namespace HistoryManagement.Infrastructure
             return iDBLibrary.UpdateItems(items);
         }
 
+        internal static void DeleteLibraryItems(IList<LibraryItemEntity> items)
+        {
+            iDBLibrary.DeleteItems(items);
+        }
+
         internal static IList<HistoryEntity> GetHistories()
         {
             return iDBHistory.GetItems();

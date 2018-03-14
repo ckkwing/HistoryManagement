@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteDAL", "SQLiteDAL\SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HistoryManagement.Modules.Navigation", "HistoryManagement.Modules.Navigation\HistoryManagement.Modules.Navigation.csproj", "{D45F21F1-B57B-4F9F-8691-E68057C29161}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileExplorer", "FileExplorer\FileExplorer.csproj", "{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,14 @@ Global
 		{D45F21F1-B57B-4F9F-8691-E68057C29161}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D45F21F1-B57B-4F9F-8691-E68057C29161}.Release|x86.ActiveCfg = Release|Any CPU
 		{D45F21F1-B57B-4F9F-8691-E68057C29161}.Release|x86.Build.0 = Release|Any CPU
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Debug|x86.ActiveCfg = Debug|x86
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Debug|x86.Build.0 = Debug|x86
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Release|x86.ActiveCfg = Release|x86
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,5 +149,6 @@ Global
 		{946F645B-7421-4E44-959A-881F5FBFCBD2} = {EA1AB769-EB0C-45AB-AD3F-EB31BBF2FB05}
 		{F9A4680A-E1B3-4806-830D-B1F2CDB74B93} = {EA1AB769-EB0C-45AB-AD3F-EB31BBF2FB05}
 		{D45F21F1-B57B-4F9F-8691-E68057C29161} = {F054ECC6-2F3F-40E5-97EB-FA98D228D620}
+		{D8BCAB64-0CD9-4390-AAEC-7839417E8D22} = {A9EB4969-7419-4516-854D-EFBF64429104}
 	EndGlobalSection
 EndGlobal

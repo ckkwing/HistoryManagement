@@ -146,6 +146,7 @@ namespace HistoryManagement.Infrastructure
             if (disposing)
             {
                 //TODO:释放那些实现IDisposable接口的托管对象
+                GC.SuppressFinalize(this);
             }
             //TODO:释放非托管资源，设置对象为null
             _disposed = true;

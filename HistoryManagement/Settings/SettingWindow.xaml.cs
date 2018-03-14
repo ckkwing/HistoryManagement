@@ -21,36 +21,11 @@ namespace HistoryManagement.Settings
     /// <summary>
     /// Interaction logic for SettingWindow.xaml
     /// </summary>
-    public partial class SettingWindow : CommonDialog
+    public partial class SettingWindow : UserControl
     {
-        SettingWindowViewModel ViewModel
-        {
-            get
-            {
-                return this.DataContext as SettingWindowViewModel;
-            }
-            set
-            {
-                this.DataContext = value;
-            }
-        }
-
-        public SettingWindow(Window owner = null)
-            :base(owner)
+        public SettingWindow()
         {
             InitializeComponent();
-            this.DataContext = new SettingWindowViewModel();
-        }
-
-        private void settingWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void settingWindow_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (!ViewModel.IsNull())
-                ViewModel.Dispose();
         }
     }
 }

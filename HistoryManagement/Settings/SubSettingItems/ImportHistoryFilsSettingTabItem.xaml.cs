@@ -1,9 +1,14 @@
-﻿using HistoryManagement.Infrastructure;
+﻿using FileExplorer.Model;
+using FileExplorer.ViewModel;
+using HistoryManagement.Infrastructure;
+using HistoryManagement.Infrastructure.Command;
+using IDAL.Model;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,23 +30,60 @@ namespace HistoryManagement.Settings.SubSettingItems
     /// </summary>
     public partial class ImportHistoryFilsSettingTabItem : SettingBaseTabItem
     {
+        private IList<IFolder> selectedFileList = new List<IFolder>();
+        public IList<IFolder> SelectedFileList
+        {
+            get
+            {
+                return selectedFileList;
+            }
+
+            private set
+            {
+                selectedFileList = value;
+            }
+        }
+
+        private FileExplorerViewModel treeViewModel = new FileExplorerViewModel();
+        public FileExplorerViewModel TreeViewModel
+        {
+            get
+            {
+                return treeViewModel;
+            }
+        }
+
         private IEventAggregator eventAggregator;
-        public ICommand SaveCommand { get; private set; }
+        public IAsyncCommand SaveCommand { get; private set; }
         public ImportHistoryFilsSettingTabItem()
         {
             InitializeComponent();
             this.DataContext = this;
-            this.SaveCommand = new DelegateCommand<object>(OnSave, obj => { return true; });
+            SaveCommand = new AsyncDelegateCommand<object>(OnSave, obj => { return true; });
         }
 
-        private void OnSave(object obj)
+        private Task OnSave(object arg)
         {
-            if (!this.eventAggregator.IsNull())
-                this.eventAggregator.GetEvent<SubSettingSavedEvent>().Publish(new SubSettingArgs() { SubSettingName = "" });
+            SettingWindowViewModel viewModel = arg as SettingWindowViewModel;
+            if (viewModel.IsNull())
+                return Task.Factory.StartNew(() => { });
+                
+            return Task.Factory.StartNew(() =>
+            {
+                viewModel.SelectedFileList = TreeViewModel.GetCheckedFolders();
+            });
         }
 
         private void SettingBaseTabItem_Loaded(object sender, RoutedEventArgs e)
         {
+            TreeViewModel.LoadLocalExplorer();
+            if (!TreeViewModel.RootFolder.IsNull() &&
+                             TreeViewModel.RootFolder.IsChecked == false)
+            {
+                IList<string> selectedPathList = new List<string>();
+                DataManager.Instance.LibraryItems.ToList().ForEach(item => selectedPathList.Add(item.Path));
+                TreeViewModel.SetCheckedPaths(selectedPathList);
+            }
             this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             GlobalCommands.SaveAllSettingsCommand.RegisterCommand(SaveCommand);
         }

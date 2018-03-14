@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using HistoryManagement.Infrastructure.Command;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace HistoryManagement.Infrastructure
 {
     public static class GlobalCommands
     {
-        public static CompositeCommand SaveAllSettingsCommand = new CompositeCommand();
+        //public static CompositeCommand SaveAllSettingsCommand = new CompositeCommand();
+        public static AsyncCompositeCommand SaveAllSettingsCommand = new AsyncCompositeCommand();
     }
 }
