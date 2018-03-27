@@ -32,7 +32,7 @@ namespace HistoryManagement.Infrastructure
 
         DataManager()
         {
-            
+
         }
 
         #region Property
@@ -45,8 +45,8 @@ namespace HistoryManagement.Infrastructure
             }
         }
 
-        private ObservableCollection<HistoryEntity> histories = new ObservableCollection<HistoryEntity>();
-        public ObservableCollection<HistoryEntity> Histories
+        private IList<HistoryEntity> histories = new List<HistoryEntity>();
+        public IEnumerable<HistoryEntity> Histories
         {
             get
             {
@@ -68,7 +68,7 @@ namespace HistoryManagement.Infrastructure
             //}
         }
 
-        
+
         #endregion
 
         public void Init()
@@ -85,7 +85,7 @@ namespace HistoryManagement.Infrastructure
         public void RefreshDBData()
         {
             libraryItems.Clear();
-            foreach(LibraryItemEntity libraryItem in DBHelper.GetLibraryItems())
+            foreach (LibraryItemEntity libraryItem in DBHelper.GetLibraryItems())
             {
                 libraryItems.Add(libraryItem);
             }
@@ -108,7 +108,7 @@ namespace HistoryManagement.Infrastructure
                 if (!eventAggregator.IsNull())
                     eventAggregator.GetEvent<DBDataRefreshedEvents>().Publish(new DBDataRefreshedEventEventArgs() { DBDataType = DBDataType.All });
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 NLogger.LogHelper.UILogger.Debug(e);
             }
@@ -126,7 +126,7 @@ namespace HistoryManagement.Infrastructure
         {
             if (items.IsNull())
                 return 0;
-            
+
             return DBHelper.UpdateLibraryItems(items);
         }
 
@@ -140,13 +140,26 @@ namespace HistoryManagement.Infrastructure
 
         #region Scanner
 
+        public void SyncHistories(IList<LibraryItemEntity> list, Action callback)
+        {
+            Action action = () =>
+            {
+                HistoryScanner scanner = new HistoryScanner(list.ToList());
+                scanner.StartScan();
+                WriteToDBByScannedResult(scanner.Results);
+            };
+
+            action.BeginInvoke(ar =>
+            {
+                RefreshDBData();
+                if (!callback.IsNull())
+                    callback();
+                ThreadHelper.EndInvokeAction(ar);
+            }, action);
+        }
+
         public void StartScanAndUpdateDB(IList<LibraryItemEntity> list, Action callback)
         {
-            //var addList = list.Where(item => !LibraryItems.Any(i => 0 == string.Compare(i.Path, item.Path, true)));
-            //var updateList = list.Where(item => null != LibraryItems.FirstOrDefault(i => ((0 == string.Compare(i.Path, item.Path, true)) && i.Level != item.Level)));
-            //StartScanAndUpdateDB(addList.ToList(), updateList.ToList());
-
-            
             Func<IDictionary<LibraryItemEntity, IList<DirectoryInfo>>> function = () =>
             {
                 var removeList = LibraryItems.Where(item => list.FirstOrDefault(i => 0 == string.Compare(i.Path, item.Path, true)).IsNull());
@@ -157,11 +170,34 @@ namespace HistoryManagement.Infrastructure
                 AddLibraryItems(addList.ToList());
                 HistoryScanner scanner = new HistoryScanner(addList.ToList());
                 scanner.StartScan();
+                WriteToDBByScannedResult(scanner.Results);
 
-                IList<HistoryEntity> historyList = new List<HistoryEntity>();
-                foreach (KeyValuePair<LibraryItemEntity, IList<DirectoryInfo>> pair in scanner.Results)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
-                    string defaultCategoryName = Path.GetFileName(pair.Key.Path);
+                    RefreshDBData();
+                    if (!callback.IsNull())
+                        callback();
+                }));
+
+                return scanner.Results;
+            };
+
+            function.BeginInvoke(ar =>
+            {
+                IEnumerable<DirectoryInfo> results = ThreadHelper.EndInvokeFunc<IEnumerable<DirectoryInfo>>(ar);
+            }, function);
+        }
+
+        private void WriteToDBByScannedResult(IDictionary<LibraryItemEntity, IList<DirectoryInfo>> result)
+        {
+            IList<HistoryEntity> addHistoryList = new List<HistoryEntity>();
+            IList<HistoryEntity> removeHistoryList = new List<HistoryEntity>();
+            IList<DirectoryInfo> scannedResult = new List<DirectoryInfo>();
+            foreach (KeyValuePair<LibraryItemEntity, IList<DirectoryInfo>> pair in result)
+            {
+                foreach (DirectoryInfo scannedItem in pair.Value)
+                {
+                    string defaultCategoryName = scannedItem.Parent.Name;
                     CategoryEntity category = Categories.FirstOrDefault(item => 0 == string.Compare(defaultCategoryName, item.Name, true));
                     if (category.IsNull())
                     {
@@ -173,34 +209,36 @@ namespace HistoryManagement.Infrastructure
                                 categories.Add(category);
                             }));
                         }
-
-                        foreach (DirectoryInfo scannedItem in pair.Value)
-                        {
-                            HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = scannedItem.Name, Path = scannedItem.FullName, Comment = string.Empty, LibraryID =  pair.Key.ID};
-                            if (!category.IsNull())
-                                history.CategoryIDs.Add(category.ID);
-                            historyList.Add(history);
-                        }
                     }
+
+                    HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = scannedItem.Name, Path = scannedItem.FullName, Comment = string.Empty, LibraryID = pair.Key.ID };
+                    if (!category.IsNull())
+                        history.CategoryIDs.Add(category.ID);
+                    if (Histories.FirstOrDefault(item => 0 == string.Compare(item.Path, history.Path, true)).IsNull())
+                        addHistoryList.Add(history);
+
+                    scannedResult.Add(scannedItem);
                 }
+            }
+            DBHelper.AddHistoryItems(addHistoryList);
 
-                DBHelper.AddHistoryItems(historyList);
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
-                {
-                    RefreshDBData();
-                    if (!callback.IsNull())
-                        callback();
-                }));
+            foreach (HistoryEntity history in this.Histories)
+            {
+                //if (scannedResult.FirstOrDefault(item => 0 == string.Compare(item.FullName, history.Path, true)).IsNull())
+                //    removeHistoryList.Add(history);
+                if (!Directory.Exists(history.Path))
+                    removeHistoryList.Add(history);
+            }
+            DBHelper.DeleteHistoryItems(removeHistoryList);
 
-                
-                return scanner.Results;
-            };
-
-            function.BeginInvoke(ar => {
-                IEnumerable<DirectoryInfo> results = ThreadHelper.EndInvokeFunc<IEnumerable<DirectoryInfo>>(ar);
-            }, function);
         }
 
+
+        /// <summary>
+        /// Not used right now
+        /// </summary>
+        /// <param name="addList"></param>
+        /// <param name="updateList"></param>
         public void StartScanAndUpdateDB(IList<LibraryItemEntity> addList, IList<LibraryItemEntity> updateList)
         {
             //Action action = () => {
@@ -211,7 +249,7 @@ namespace HistoryManagement.Infrastructure
             //action.BeginInvoke(ar => {
             //    ThreadHelper.EndInvokeAction(ar);
             //}, action);
-            
+
             if (0 == addList.Count() && 0 == updateList.Count())
                 return;
 
@@ -240,7 +278,7 @@ namespace HistoryManagement.Infrastructure
                             }));
                         }
 
-                        foreach(DirectoryInfo scannedItem in pair.Value)
+                        foreach (DirectoryInfo scannedItem in pair.Value)
                         {
                             HistoryEntity history = new HistoryEntity() { IsDeleted = false, Name = scannedItem.Name, Path = scannedItem.FullName, Comment = string.Empty };
                             if (!category.IsNull())
@@ -249,17 +287,18 @@ namespace HistoryManagement.Infrastructure
                         }
                     }
                 }
-                
+
                 DBHelper.AddHistoryItems(historyList);
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
                     RefreshDBData();
                 }));
-                
+
                 return scanner.Results;
             };
 
-            function.BeginInvoke(ar => {
+            function.BeginInvoke(ar =>
+            {
                 IEnumerable<DirectoryInfo> results = ThreadHelper.EndInvokeFunc<IEnumerable<DirectoryInfo>>(ar);
             }, function);
         }

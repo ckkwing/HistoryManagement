@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,14 @@ namespace IDAL.Model
             {
                 id = value;
                 RaisePropertyChanged("ID");
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                return System.IO.Path.GetFileName(path);
             }
         }
 

@@ -41,5 +41,10 @@ namespace HistoryManagement.Modules.Home.Views
         {
             InitializeComponent();
         }
+
+        //private void ListViewItem_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
+        //{
+        //    e.Handled = true;
+        //}
     }
 }

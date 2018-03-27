@@ -50,6 +50,11 @@ namespace HistoryManagement.Infrastructure
             return iDBHistory.InsertItems(items);
         }
 
+        internal static void DeleteHistoryItems(IList<HistoryEntity> items)
+        {
+            iDBHistory.DeleteItems(items);
+        }
+
         internal static IList<CategoryEntity> GetCategories()
         {
             return iDBCategory.GetItems();

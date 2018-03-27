@@ -19,7 +19,8 @@
     <Grid Background="#f2f2f2">
         <TabControl Grid.Row="0" Style="{DynamicResource SettingTabControlStyle}" SelectedIndex="{Binding SelectedIndex}">
             <!--<tabItems:AddLibrarySettingTabItem />-->
-            <tabItems:ImportHistoryFilsSettingTabItem />
+            <!--<tabItems:ImportHistoryFilsSettingTabItem />-->
+            <tabItems:LibrarySettingTabItem />
         </TabControl>
         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,11,10,11">
             <Button Content="{StaticResource IDS_SAVE}" Margin="0,0,10,0" Command="{x:Static infrastucture:GlobalCommands.SaveAllSettingsCommand}" CommandParameter="{Binding}" />

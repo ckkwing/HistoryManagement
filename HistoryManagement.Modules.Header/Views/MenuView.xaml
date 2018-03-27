@@ -9,7 +9,7 @@
         <Button Content="Setting" Command="{Binding Path=OpenSettingWindowCommand}" />-->
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="_New" />
+                <MenuItem Header="{DynamicResource IDS_MENU_FILE_REFRESHLIBRARY}" Command="{Binding Path=RefreshLibraryCommand}" />
                 <MenuItem Header="_Open" />
                 <MenuItem Header="_Save" />
                 <Separator />

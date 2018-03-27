@@ -48,10 +48,27 @@ namespace HistoryManagement
         [ImportingConstructor]
         public ShellViewModel(IEventAggregator eventAggregator)
         {
-            this.EventAggregator = eventAggregator;
-            this.EventAggregator.GetEvent<OpenSettingEvent>().Subscribe(OnOpenSettingWindow, ThreadOption.UIThread);
+            EventAggregator = eventAggregator;
+            EventAggregator.GetEvent<OpenSettingEvent>().Subscribe(OnOpenSettingWindow, ThreadOption.UIThread);
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.View_Category });
+            EventAggregator.GetEvent<MenuViewEvent>().Subscribe(OnMenuEventReceived, ThreadOption.UIThread);
 
             this.openSettingWindowRequest = new InteractionRequest<SettingWindowViewModel>();
+        }
+
+        private void OnMenuEventReceived(MenuViewEventArgs obj)
+        {
+            switch(obj.MenuViewType)
+            {
+                case MenuViewType.File_RefreshLibrary:
+                    {
+                        this.InProgress = true;
+                        DataManager.Instance.SyncHistories(DataManager.Instance.LibraryItems.ToList(), () => {
+                            this.InProgress = false;
+                        });
+                    }
+                    break;
+            }
         }
 
         ~ShellViewModel()

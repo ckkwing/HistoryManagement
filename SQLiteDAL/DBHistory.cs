@@ -14,10 +14,39 @@ namespace SQLiteDAL
     public class DBHistory : IDBHistory
     {
         private readonly string sqlInsertFormat = "INSERT INTO {0} (ID, PATH, NAME, STAR, COMMENT, CATEGORYIDS, ISDELETED, LIBRARYID) VALUES (NULL, @PATH, @NAME, @STAR, @COMMENT, @CATEGORYIDS, @ISDELETED, @LIBRARYID);" + DataAccess.SQL_SELECT_ID_LAST;
+        private readonly string sqlDeleteFormat = "DELETE FROM {0} WHERE ID=@ID";
 
         public void DeleteItems(IList<HistoryEntity> items)
         {
-            throw new NotImplementedException("Do not delete anything!");
+            if (0 == items.Count)
+                return;
+
+            string sqlDelete = string.Format(sqlDeleteFormat, DataAccess.TABLE_NAME_HISTORY);
+            SQLiteConnection conn = new SQLiteConnection(DataAccess.ConnectionStringProfile);
+            conn.Open();
+            SQLiteTransaction trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            SQLiteParameter[] parms = {
+                new SQLiteParameter("@ID", DbType.Int32)
+                    };
+
+            try
+            {
+                foreach (HistoryEntity item in items)
+                {
+                    parms[0].Value = item.ID;
+                    SqliteHelper.ExecuteNonQuery(trans, CommandType.Text, sqlDelete, parms);
+                }
+                trans.Commit();
+            }
+            catch (Exception e)
+            {
+                trans.Rollback();
+                throw new ApplicationException(e.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         public IList<HistoryEntity> GetItems()

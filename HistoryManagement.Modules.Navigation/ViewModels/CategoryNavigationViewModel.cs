@@ -3,6 +3,7 @@ using HistoryManagement.Infrastructure.Events;
 using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
 using Prism.Events;
+using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +19,7 @@ namespace HistoryManagement.Modules.Navigation.ViewModels
 {
     [Export(typeof(CategoryNavigationViewModel))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class CategoryNavigationViewModel : ViewModelBase
+    public class CategoryNavigationViewModel : ViewModelBase, IRegionMemberLifetime
     {
         private IEventAggregator eventAggregator;
         private UICategoryEntity root = new UICategoryEntity() { ID = -1, Name = ResourceProvider.LoadString("IDS_ALL"), Description = ResourceProvider.LoadString("IDS_ALL"), IsRootAll = true };
@@ -35,6 +36,16 @@ namespace HistoryManagement.Modules.Navigation.ViewModels
                 RaisePropertyChanged("Root");
             }
         }
+
+        #region IRegionMemberLifetime
+        public bool KeepAlive
+        {
+            get
+            {
+                return false;
+            }
+        }
+        #endregion 
 
         public ICollectionView UICategories { get; private set; }
 

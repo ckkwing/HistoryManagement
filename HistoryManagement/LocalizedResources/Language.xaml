@@ -19,6 +19,7 @@
     
     <!--Menu-->
     <System:String x:Uid="IDS_MENU_FILE" x:Key="IDS_MENU_FILE">File</System:String>
+    <System:String x:Uid="IDS_MENU_FILE_REFRESHLIBRARY" x:Key="IDS_MENU_FILE_REFRESHLIBRARY">Refresh library</System:String>
     <System:String x:Uid="IDS_MENU_VIEW" x:Key="IDS_MENU_VIEW">View</System:String>
     <System:String x:Uid="IDS_MENU_VIEW_CATEGORY" x:Key="IDS_MENU_VIEW_CATEGORY">View by Category</System:String>
     <System:String x:Uid="IDS_MENU_VIEW_PATH" x:Key="IDS_MENU_VIEW_PATH">View by Path</System:String>
@@ -29,6 +30,7 @@
     <System:String x:Uid="IDS_SETTING" x:Key="IDS_SETTING">Setting</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES" x:Key="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES">Import history files</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_ADDLIBRARY" x:Key="IDS_SETTINGS_HEADER_ADDLIBRARY">Add Library</System:String>
+    <System:String x:Uid="IDS_SETTINGS_HEADER_CHOOSELIBRARY" x:Key="IDS_SETTINGS_HEADER_CHOOSELIBRARY">Choose your Library</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_BROWSEINFO" x:Key="IDS_SETTINGS_LIBRARY_BROWSEINFO">Choose your folder to library</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_PATH" x:Key="IDS_SETTINGS_LIBRARY_PATH">Path</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_RANK" x:Key="IDS_SETTINGS_LIBRARY_RANK">Rank</System:String>
@@ -38,4 +40,5 @@
     <System:String x:Uid="IDS_HISTORY_NAME" x:Key="IDS_HISTORY_NAME">Name</System:String>
     <System:String x:Uid="IDS_HISTORY_PATH" x:Key="IDS_HISTORY_PATH">Path</System:String>
     <System:String x:Uid="IDS_HISTORY_STAR" x:Key="IDS_HISTORY_STAR">Star</System:String>
+    <System:String x:Uid="IDS_HISTORY_SEARCHRESULT" x:Key="IDS_HISTORY_SEARCHRESULT">Results count:{0}</System:String>
 </ResourceDictionary>

@@ -18,8 +18,9 @@ namespace HistoryManagement.Infrastructure.Events
 
     public enum MenuViewType
     {
-        Category,
-        Path
+        File_RefreshLibrary,
+        View_Category,
+        View_Path
     }
     public class MenuViewEventArgs : EventArgs
     {

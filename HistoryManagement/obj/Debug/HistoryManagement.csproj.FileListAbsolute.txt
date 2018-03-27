@@ -27,3 +27,5 @@ D:\Github\HistoryManagement\HistoryManagement\obj\Debug\HistoryManagement.Proper
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\HistoryManagement.csproj.GenerateResource.Cache
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\HistoryManagement.exe
 D:\Github\HistoryManagement\HistoryManagement\obj\Debug\HistoryManagement.pdb
+D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Settings\SubSettingItems\LibrarySettingTabItem.g.cs
+D:\Github\HistoryManagement\HistoryManagement\obj\Debug\Settings\SubSettingItems\LibrarySettingTabItem.baml

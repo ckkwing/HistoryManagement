@@ -19,6 +19,7 @@ namespace HistoryManagement.Modules.Header.ViewModels
         public ICommand OpenSettingWindowCommand { get; private set; }
         public ICommand ViewByCategoryCommand { get; private set; }
         public ICommand ViewByPathCommand { get; private set; }
+        public ICommand RefreshLibraryCommand { get; private set; }
         [Import]
         public IEventAggregator EventAggregator;
 
@@ -27,16 +28,22 @@ namespace HistoryManagement.Modules.Header.ViewModels
             OpenSettingWindowCommand = new DelegateCommand<object>(OnOpenSettingWindow);
             ViewByCategoryCommand = new DelegateCommand<object>(OnViewByCategory);
             ViewByPathCommand = new DelegateCommand<object>(OnViewByPath);
+            RefreshLibraryCommand = new DelegateCommand<object>(OnRefreshLibrary);
+        }
+
+        private void OnRefreshLibrary(object obj)
+        {
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.File_RefreshLibrary });
         }
 
         private void OnViewByPath(object obj)
         {
-            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.Path });
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.View_Path });
         }
 
         private void OnViewByCategory(object obj)
         {
-            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.Category });
+            EventAggregator.GetEvent<MenuViewEvent>().Publish(new MenuViewEventArgs() { MenuViewType = MenuViewType.View_Category });
         }
 
         private void OnOpenSettingWindow(object obj)

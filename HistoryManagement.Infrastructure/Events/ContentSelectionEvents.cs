@@ -1,4 +1,5 @@
 ﻿using HistoryManagement.Infrastructure.UIModel;
+using IDAL.Model;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace HistoryManagement.Infrastructure.Events
     public enum SelectionType
     {
         Category,
+        Library,
     }
     public class ContentSelectionEventArgs : EventArgs
     {
         public SelectionType SelectionType { get; set; }
         public UICategoryEntity UICategoryEntity { get; set; }
+        public LibraryItemEntity LibraryItemEntity { get; set; }
     }
 
     public class ContentSelectionEvents : PubSubEvent<ContentSelectionEventArgs>

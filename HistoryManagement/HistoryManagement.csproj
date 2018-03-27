@@ -90,6 +90,9 @@
     <Compile Include="Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml.cs">
       <DependentUpon>ImportHistoryFilsSettingTabItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\SubSettingItems\LibrarySettingTabItem.xaml.cs">
+      <DependentUpon>LibrarySettingTabItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SubSettingItems\SettingBaseTabItem.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Page Include="LocalizedResources\CommonResource.xaml">
@@ -109,6 +112,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings\SubSettingItems\ImportHistoryFilsSettingTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SubSettingItems\LibrarySettingTabItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

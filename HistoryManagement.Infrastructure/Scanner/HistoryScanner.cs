@@ -28,8 +28,6 @@ namespace HistoryManagement.Infrastructure.Scanner
 
         private IList<LibraryItemEntity> entityToScan = null;
 
-        
-
         public HistoryScanner(IList<LibraryItemEntity> entityToScan)
         {
             this.entityToScan = entityToScan;
@@ -59,12 +57,15 @@ namespace HistoryManagement.Infrastructure.Scanner
             DirectoryInfo[] directories = directInfo.GetDirectories();
             currentRank++;
             if (directories.IsNull() || 0 == directories.Length)
+            {
+                results.Add(directInfo);
                 return;
+            }
 
             for (int i = 0; i < directories.Length; i++)
             {
                 DirectoryInfo subDir = directories[i];
-                results.Add(subDir);
+                //results.Add(subDir);
                 ScanDirectory(subDir, rank, ref results, ref currentRank);
             }
         }

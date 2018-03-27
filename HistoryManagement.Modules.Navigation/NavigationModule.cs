@@ -45,10 +45,10 @@ namespace HistoryManagement.Modules.Navigation
             Type type = typeof(CategoryNavigationView);
             switch (obj.MenuViewType)
             {
-                case MenuViewType.Category:
+                case MenuViewType.View_Category:
                     type = typeof(CategoryNavigationView);
                     break;
-                case MenuViewType.Path:
+                case MenuViewType.View_Path:
                     type = typeof(PathNavigationView);
                     break;
             }

@@ -3,8 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:HistoryManagement.Modules.Navigation.Views">
+             xmlns:local="clr-namespace:HistoryManagement.Modules.Navigation.Views"
+             xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme">
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="ListBoxItemTemplate">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <customControl:EnhancedTextBlock x:Name="txt" Text="{Binding Path=Path}" ToolTip="{Binding Path=Path}"  HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </Trigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type ListBoxItem}},
+                                    Path=IsSelected}"
+                                    Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="PathNavigationView" />
+        <ListBox ItemsSource="{Binding Path=UIPaths}" IsSynchronizedWithCurrentItem="True" ItemTemplate="{StaticResource ListBoxItemTemplate}" ItemContainerStyle="{StaticResource CommonListBoxItemContainerStyle}" />
     </Grid>
 </UserControl>

@@ -21,7 +21,7 @@ namespace HistoryManagement.Modules.Navigation.Views
     /// Interaction logic for PathNavigationView.xaml
     /// </summary>
     [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PathNavigationView : UserControl
     {
         [Import]
