@@ -41,4 +41,7 @@
     <System:String x:Uid="IDS_HISTORY_PATH" x:Key="IDS_HISTORY_PATH">Path</System:String>
     <System:String x:Uid="IDS_HISTORY_STAR" x:Key="IDS_HISTORY_STAR">Star</System:String>
     <System:String x:Uid="IDS_HISTORY_SEARCHRESULT" x:Key="IDS_HISTORY_SEARCHRESULT">Results count:{0}</System:String>
+    
+    <!--Category-->
+    <System:String x:Uid="IDS_CATEGORY_ALL" x:Key="IDS_CATEGORY_ALL">All categories</System:String>
 </ResourceDictionary>

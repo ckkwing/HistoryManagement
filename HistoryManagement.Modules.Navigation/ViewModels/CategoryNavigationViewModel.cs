@@ -22,7 +22,7 @@ namespace HistoryManagement.Modules.Navigation.ViewModels
     public class CategoryNavigationViewModel : ViewModelBase, IRegionMemberLifetime
     {
         private IEventAggregator eventAggregator;
-        private UICategoryEntity root = new UICategoryEntity() { ID = -1, Name = ResourceProvider.LoadString("IDS_ALL"), Description = ResourceProvider.LoadString("IDS_ALL"), IsRootAll = true };
+        private UICategoryEntity root = new UICategoryEntity() { ID = -1, Name = ResourceProvider.LoadString("IDS_CATEGORY_ALL"), Description = ResourceProvider.LoadString("IDS_CATEGORY_ALL"), IsRootAll = true };
         public UICategoryEntity Root
         {
             get
