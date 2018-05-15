@@ -1,5 +1,5 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:System="clr-namespace:System;assembly=mscorlib">
-  <!-- String form C++ Resource Start-->
+    <!-- String form C++ Resource Start-->
     <!--Common-->
     <System:String x:Uid="IDS_OK" x:Key="IDS_OK">Ok</System:String>
     <System:String x:Uid="IDS_SAVE" x:Key="IDS_SAVE">Save</System:String>
@@ -8,15 +8,13 @@
     <System:String x:Uid="IDS_ADD" x:Key="IDS_ADD">Add</System:String>
     <System:String x:Uid="IDS_REMOVE" x:Key="IDS_REMOVE">Remove</System:String>
     <System:String x:Uid="IDS_PLAY" x:Key="IDS_PLAY">Play</System:String>
-    <System:String x:Uid="IDS_OPENLOCATION" x:Key="IDS_OPENLOCATION">Open location</System:String>
     <System:String x:Uid="IDS_IMAGE" x:Key="IDS_IMAGE">Image</System:String>
     <System:String x:Uid="IDS_VIDEO" x:Key="IDS_VIDEO">Video</System:String>
     <System:String x:Uid="IDS_MUSIC" x:Key="IDS_MUSIC">Music</System:String>
     <System:String x:Uid="IDS_DOCUMENT" x:Key="IDS_DOCUMENT">Document</System:String>
     <System:String x:Uid="IDS_FOLDER" x:Key="IDS_FOLDER">Folder</System:String>
     <System:String x:Uid="IDS_ALL" x:Key="IDS_ALL">All</System:String>
-    <!---->
-    
+
     <!--Menu-->
     <System:String x:Uid="IDS_MENU_FILE" x:Key="IDS_MENU_FILE">File</System:String>
     <System:String x:Uid="IDS_MENU_FILE_REFRESHLIBRARY" x:Key="IDS_MENU_FILE_REFRESHLIBRARY">Refresh library</System:String>
@@ -24,8 +22,12 @@
     <System:String x:Uid="IDS_MENU_VIEW_CATEGORY" x:Key="IDS_MENU_VIEW_CATEGORY">View by Category</System:String>
     <System:String x:Uid="IDS_MENU_VIEW_PATH" x:Key="IDS_MENU_VIEW_PATH">View by Path</System:String>
     <System:String x:Uid="IDS_MENU_SETTING" x:Key="IDS_MENU_SETTING">Setting</System:String>
-    <!---->
+
+    <!--Action-->
+    <System:String x:Uid="IDS_ACTION_OPENLOCATION" x:Key="IDS_ACTION_OPENLOCATION">Open location</System:String>
+    <System:String x:Uid="IDS_ACTION_SETCATEGORY" x:Key="IDS_ACTION_SETCATEGORY">Set category</System:String>
     
+
     <!--Settings-->
     <System:String x:Uid="IDS_SETTING" x:Key="IDS_SETTING">Setting</System:String>
     <System:String x:Uid="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES" x:Key="IDS_SETTINGS_HEADER_IMPORTHISTORYFILES">Import history files</System:String>
@@ -34,14 +36,14 @@
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_BROWSEINFO" x:Key="IDS_SETTINGS_LIBRARY_BROWSEINFO">Choose your folder to library</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_PATH" x:Key="IDS_SETTINGS_LIBRARY_PATH">Path</System:String>
     <System:String x:Uid="IDS_SETTINGS_LIBRARY_RANK" x:Key="IDS_SETTINGS_LIBRARY_RANK">Rank</System:String>
-    <!---->
-    
+    <System:String x:Uid="IDS_SETTING_CATEGORY_TITLE" x:Key="IDS_SETTING_CATEGORY_TITLE">Config your categories</System:String>
+
     <!--History-->
     <System:String x:Uid="IDS_HISTORY_NAME" x:Key="IDS_HISTORY_NAME">Name</System:String>
     <System:String x:Uid="IDS_HISTORY_PATH" x:Key="IDS_HISTORY_PATH">Path</System:String>
     <System:String x:Uid="IDS_HISTORY_STAR" x:Key="IDS_HISTORY_STAR">Star</System:String>
     <System:String x:Uid="IDS_HISTORY_SEARCHRESULT" x:Key="IDS_HISTORY_SEARCHRESULT">Results count:{0}</System:String>
-    
+
     <!--Category-->
     <System:String x:Uid="IDS_CATEGORY_ALL" x:Key="IDS_CATEGORY_ALL">All categories</System:String>
 </ResourceDictionary>

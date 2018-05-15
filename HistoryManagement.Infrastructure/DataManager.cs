@@ -1,5 +1,6 @@
 ﻿using HistoryManagement.Infrastructure.Events;
 using HistoryManagement.Infrastructure.Scanner;
+using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
 using Prism.Events;
 using System;
@@ -51,6 +52,19 @@ namespace HistoryManagement.Infrastructure
             get
             {
                 return histories;
+            }
+        }
+
+        public IEnumerable<UIHistoryEntity> UIHistories
+        {
+            get
+            {
+                IList<UIHistoryEntity> list = new List<UIHistoryEntity>();
+                foreach (HistoryEntity entity in Histories)
+                {
+                    list.Add(UIHistoryEntity.Create(entity));
+                }
+                return list;
             }
         }
 
@@ -304,6 +318,5 @@ namespace HistoryManagement.Infrastructure
         }
 
         #endregion
-
     }
 }

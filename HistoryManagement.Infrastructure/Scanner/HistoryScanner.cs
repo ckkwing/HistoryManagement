@@ -10,6 +10,11 @@ using Utilities.Extension;
 
 namespace HistoryManagement.Infrastructure.Scanner
 {
+    public interface ISyncData
+    {
+        bool IsChecked { get; set; }
+    }
+
     public class HistoryScanner
     {
         private IDictionary<LibraryItemEntity, IList<DirectoryInfo>> results = new Dictionary<LibraryItemEntity, IList<DirectoryInfo>>();

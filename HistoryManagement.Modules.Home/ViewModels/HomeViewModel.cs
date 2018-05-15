@@ -1,5 +1,6 @@
 ﻿using HistoryManagement.Infrastructure;
 using HistoryManagement.Infrastructure.Events;
+using HistoryManagement.Infrastructure.UIModel;
 using IDAL.Model;
 using Prism.Commands;
 using Prism.Events;
@@ -27,7 +28,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
         public IEventAggregator eventAggregator;
         private ContentSelectionEventArgs currentContentSelectionArgs;
         public ICommand SubmitCommand { get; private set; }
-        public InteractionRequest<IConfirmation> ConfirmationRequest { get; private set; }
+        public InteractionRequest<IConfirmation> OpenCategorySettingRequest { get; private set; } = new InteractionRequest<IConfirmation>();
         private string interactionResultMessage = string.Empty;
         public string InteractionResultMessage
         {
@@ -78,7 +79,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
                         }
                     }
                 }
-                ResultCount = UIHistories.Cast<HistoryEntity>().Count();
+                ResultCount = UIHistories.Cast<UIHistoryEntity>().Count();
             }
         }
 
@@ -97,20 +98,6 @@ namespace HistoryManagement.Modules.Home.ViewModels
             }
         }
 
-        //private ObservableCollection<HistoryEntity> histories = new ObservableCollection<HistoryEntity>();
-        //public ObservableCollection<HistoryEntity> Histories
-        //{
-        //    get
-        //    {
-        //        return histories;
-        //    }
-
-        //    set
-        //    {
-        //        histories = value;
-        //    }
-        //}
-
         private ICollectionView uiHistories;
         public ICollectionView UIHistories
         {
@@ -118,26 +105,27 @@ namespace HistoryManagement.Modules.Home.ViewModels
             {
                 if (uiHistories == null)
                 {
-                    uiHistories = CollectionViewSource.GetDefaultView(DataManager.Instance.Histories);
+                    uiHistories = CollectionViewSource.GetDefaultView(DataManager.Instance.UIHistories);
                 }
                 return uiHistories;
             }
         }
 
         public ICommand OpenLocationCommand { get; private set; } 
+        public ICommand SetCategoryCommand { get; private set; }
 
         
         [ImportingConstructor]
         public HomeViewModel(IEventAggregator eventAggregator)
         {
-            ConfirmationRequest = new InteractionRequest<IConfirmation>();
             SubmitCommand = new DelegateCommand<object>(this.OnSubmit, obj => { return true; });
-            OpenLocationCommand = new DelegateCommand<HistoryEntity>(OnOpenLocation, CanExcute);
+            OpenLocationCommand = new DelegateCommand<UIHistoryEntity>(OnOpenLocation, CanExcute);
+            SetCategoryCommand = new DelegateCommand(OnSetCategory, CanExcute);
             this.eventAggregator = eventAggregator;
             if (!this.eventAggregator.IsNull())
                 this.eventAggregator.GetEvent<ContentSelectionEvents>().Subscribe(OnContentSelected, ThreadOption.UIThread);
             UIHistories.Filter = new Predicate<object>(GetNone);
-            ResultCount = UIHistories.Cast<HistoryEntity>().Count();
+            ResultCount = UIHistories.Cast<UIHistoryEntity>().Count();
         }
 
         ~HomeViewModel()
@@ -146,7 +134,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
                 this.eventAggregator.GetEvent<ContentSelectionEvents>().Unsubscribe(OnContentSelected);
         }
 
-        private void OnOpenLocation(HistoryEntity history)
+        private void OnOpenLocation(UIHistoryEntity history)
         {
             if (null == history )
                 return;
@@ -154,6 +142,13 @@ namespace HistoryManagement.Modules.Home.ViewModels
             if (file.IsNull())
                 return;
             Process.Start("explorer.exe", file.DirectoryName);
+        }
+
+        private void OnSetCategory()
+        {
+            OpenCategorySettingRequest.Raise(new CategorySettingViewModel(UIHistories.SourceCollection.Cast<UIHistoryEntity>().Where(item => item.IsSelected).ToList()), openCategorySetting => {
+                ;
+            });
         }
 
         private void OnContentSelected(ContentSelectionEventArgs obj)
@@ -242,7 +237,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
                             UIHistories.Filter = new Predicate<object>(obj => {
                                 if (currentContentSelectionArgs.IsNull())
                                     return false;
-                                HistoryEntity item = obj as HistoryEntity;
+                                UIHistoryEntity item = obj as UIHistoryEntity;
                                 if (item.IsNull())
                                     return false;
                                 if (item.Path.StartWithIgnoreCase(currentContentSelectionArgs.LibraryItemEntity.Path))
@@ -263,7 +258,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
         {
             if (currentContentSelectionArgs.IsNull())
                 return false;
-            HistoryEntity item = obj as HistoryEntity;
+            UIHistoryEntity item = obj as UIHistoryEntity;
             if (item.IsNull())
                 return false;
             if (item.Path.StartWithIgnoreCase(currentContentSelectionArgs.LibraryItemEntity.Path) && item.Path.IndexOf(searchContent, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -284,7 +279,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
         {
             if (currentContentSelectionArgs.IsNull())
                 return false;
-            HistoryEntity item = obj as HistoryEntity;
+            UIHistoryEntity item = obj as UIHistoryEntity;
             if (item.IsNull())
                 return false;
             if (item.CategoryIDs.Contains(currentContentSelectionArgs.UICategoryEntity.ID))
@@ -296,7 +291,7 @@ namespace HistoryManagement.Modules.Home.ViewModels
         {
             if (currentContentSelectionArgs.IsNull())
                 return false;
-            HistoryEntity item = obj as HistoryEntity;
+            UIHistoryEntity item = obj as UIHistoryEntity;
             if (item.IsNull())
                 return false;
             if (currentContentSelectionArgs.UICategoryEntity.IsRootAll)
@@ -314,9 +309,9 @@ namespace HistoryManagement.Modules.Home.ViewModels
 
         private void OnSubmit(object obj)
         {
-            this.ConfirmationRequest.Raise(
-        new Confirmation { Content = "Confirmation Message", Title = "Confirmation" },
-        c => { InteractionResultMessage = c.Confirmed ? "The user accepted." : "The user cancelled."; });
+        //    this.ConfirmationRequest.Raise(
+        //new Confirmation { Content = "Confirmation Message", Title = "Confirmation" },
+        //c => { InteractionResultMessage = c.Confirmed ? "The user accepted." : "The user cancelled."; });
         }
 
     }

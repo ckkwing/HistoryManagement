@@ -68,8 +68,6 @@
                     <ContentControl Grid.Row="1" prism:RegionManager.RegionName="{x:Static inf:RegionNames.HomeRegion}" />
                 </Grid>
             </Grid>
-
-
         </Grid>
 
         <customControl:BusyIndicator x:Name="InProgressIndicator" Information="Saving data..." Visibility="Collapsed">

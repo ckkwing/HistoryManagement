@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="HistoryManagement.Modules.Home.Views.CategorySettingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:HistoryManagement.Modules.Home.Views"
+             xmlns:customControl="clr-namespace:Theme.CustomControl;assembly=Theme"
+              xmlns:infrastucture="clr-namespace:HistoryManagement.Infrastructure;assembly=HistoryManagement.Infrastructure"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:prism="http://prismlibrary.com/"
+             Height="460" Width="600">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ExistCategoryListBoxItemTemplate">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=DataContext.AddNewCategoryCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding}" />
+                </Grid.InputBindings>
+                <!--Grid has no MouseDoubleClick-->
+                <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <prism:InvokeCommandAction Command="{Binding AddNewCategoryCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                <customControl:EnhancedTextBlock x:Name="txt" Text="{Binding Path=Name}" ToolTip="{Binding Path=Name}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </Trigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type ListBoxItem}},
+                                    Path=IsSelected}"
+                                    Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="NewCategoryListBoxItemTemplate">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=DataContext.RemoveNewCategoryCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}, Mode=FindAncestor}}" CommandParameter="{Binding}" />
+                </Grid.InputBindings>
+                <!--Grid has no MouseDoubleClick-->
+                <!--<i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseDoubleClick">
+                            <prism:InvokeCommandAction Command="{Binding AddNewCategoryCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>-->
+                <customControl:EnhancedTextBlock x:Name="txt" Text="{Binding Path=Name}" ToolTip="{Binding Path=Name}"  HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </Trigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource
+                                    Mode=FindAncestor,
+                                    AncestorType={x:Type ListBoxItem}},
+                                    Path=IsSelected}"
+                                    Value="True">
+                    <Setter Property="TextBlock.Foreground" Value="#ffffff" TargetName="txt" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ListBox Grid.Row="0" ItemsSource="{Binding Items}" ItemTemplate="{StaticResource ExistCategoryListBoxItemTemplate}" ItemContainerStyle="{StaticResource CommonListBoxItemContainerStyle}"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <customControl:EnhancedTextBlock Grid.Row="0" Grid.Column="0" Text="New category" />
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                <TextBox Width="120" Height="30" HorizontalAlignment="Left" Text="{Binding Path=NewCategory}" />
+                <Button Content="{StaticResource IDS_ADD}" Margin="0,0,10,0" Command="{Binding Path=AddNewCategoryCommand}" />
+            </StackPanel>
+            <customControl:EnhancedTextBlock Grid.Row="1" Grid.Column="0" Text="Exist category" />
+            <ListBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" ItemsSource="{Binding ExistCategories}" Width="120" ItemTemplate="{StaticResource ExistCategoryListBoxItemTemplate}" ItemContainerStyle="{StaticResource CommonListBoxItemContainerStyle}"/>
+            <TextBlock Grid.RowSpan="2" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="26">=></TextBlock>
+            <ListBox Grid.RowSpan="2" Grid.Column="3" ItemsSource="{Binding NewCategories}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Button Content="{StaticResource IDS_SAVE}" Margin="0,0,10,0" Command="{Binding Path=SaveCommand}" />
+            <Button Content="{StaticResource IDS_CANCEL}" Command="{Binding Path=CancelCommand}" />
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -26,20 +26,31 @@
     <UserControl.Resources>
         <Style x:Key="ListViewItemStyle" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
             <!--<Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />-->
-            <!--<Setter Property="IsSelected" Value="{Binding IsSelected}"/>-->
+            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
             <Setter Property="Tag" Value="{Binding DataContext, ElementName=currentView}" />
             <Setter Property="Height" Value="22" />
             <!--<EventSetter Event="RequestBringIntoView" Handler="ListViewItem_RequestBringIntoView"></EventSetter>-->
             <Setter Property="ContextMenu">
                 <Setter.Value>
                     <ContextMenu>
-                        <MenuItem Header="{StaticResource IDS_OPENLOCATION}" Command="{Binding Path=PlacementTarget.Tag.OpenLocationCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}" CommandParameter="{Binding}" />
+                        <MenuItem Header="{StaticResource IDS_ACTION_OPENLOCATION}" Command="{Binding Path=PlacementTarget.Tag.OpenLocationCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}" CommandParameter="{Binding}" />
+                        <MenuItem Header="{StaticResource IDS_ACTION_SETCATEGORY}" Command="{Binding Path=PlacementTarget.Tag.SetCategoryCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}, Mode=FindAncestor}}" CommandParameter="{Binding}" />
                     </ContextMenu>
                 </Setter.Value>
             </Setter>
         </Style>
     </UserControl.Resources>
     <Grid>
+        <i:Interaction.Triggers>
+            <prism:InteractionRequestTrigger SourceObject="{Binding OpenCategorySettingRequest, Mode=OneWay}">
+                <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
+                    <prism:PopupWindowAction.WindowContent>
+                        <local:CategorySettingView />
+                    </prism:PopupWindowAction.WindowContent>
+                </prism:PopupWindowAction>
+            </prism:InteractionRequestTrigger>
+        </i:Interaction.Triggers>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
